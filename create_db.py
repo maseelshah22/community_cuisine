@@ -77,7 +77,7 @@ def create_tables():
                     ingredient_id INT NOT NULL AUTO_INCREMENT,
                     name VARCHAR(255) NOT NULL,
                     PRIMARY KEY (ingredient_id),
-                    UNIQUE (ingredient_id)
+                    UNIQUE (name)
                 )
             ''')
 
@@ -248,6 +248,26 @@ def populate_recipe_table():
                     ''', (title, food_id))
                 
             connection.commit()
+
+def populate_ingredients_table():
+    '''
+    Populates the ingredients table with ingredients from the recipe array,
+    converting all ingredient names to lowercase to avoid duplicates based on case sensitivity.
+    '''
+    recipes = query_recipe_API()
+
+    with get_db() as connection:
+        with connection.cursor() as cursor:
+            for recipe in recipes:
+                ingredients = recipe.get("ingredients", [])
+                for ingredient in ingredients:
+                    ingredient_lowercase = ingredient.lower()
+                    cursor.execute('''
+                        INSERT IGNORE INTO ingredients (name)
+                        VALUES (%s)
+                    ''', (ingredient_lowercase,))
+
+            connection.commit()
                 
                 
                     
@@ -280,11 +300,13 @@ def get_recipe_array():
     ]
     return recipes                            
 
+def set_up_database():
+    create_tables()
+    populate_database_with_users()
+    populate_database_with_food_info()
+    populate_recipe_table()
 
-# create_tables()
-# populate_database_with_users()
-# populate_database_with_food_info()
-#populate_recipe_table()
+populate_ingredients_table()
 
 
 
