@@ -42,6 +42,7 @@ def create_tables():
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS food (
                     food_id INT NOT NULL AUTO_INCREMENT,
+                    name VARCHAR(255) NOT NULL,
                     ethnic_origin VARCHAR(255) NOT NULL,
                     meal_course VARCHAR(255) NOT NULL,
                     PRIMARY KEY (food_id),
@@ -174,51 +175,86 @@ def populate_database_with_users():
 
 def query_recipe_API():
     '''
-    Queries the recipe API and returns a list containing all recipe information
+    Queries the recipe API and returns a list containing information for one recipe per item
+    from the recipe array, using only the name of each food for the query.
     '''
-    recipes = [
-    "Cheesecake",
-    "Spaghetti Bolognese",
-    "Chicken Curry",
-    "Vegetable Stir Fry",
-    "Beef Stew",
-    "Quiche Lorraine",
-    "Margherita Pizza",
-    "Caesar Salad",
-    "Grilled Salmon",
-    "Ratatouille",
-    "Pancakes",
-    "Tacos",
-    "Tomato Soup",
-    "Lasagna",
-    "Hamburger",
-    "Pad Thai",
-    "French Onion Soup",
-    "Chocolate Cake",
-    "Sushi Rolls",
-    "Banana Bread"
-    ]
+    
+    recipes = get_recipe_array()
 
     all_recipes_results = []
 
-    for recipe in recipes:
+    for food in recipes:
         params = {
-        "q": recipe,
-        "hl": "en",
-        "gl": "us",
-        "api_key": "f1364074a82eef5ce493df6854fc7f243f458fd0cc555c46037b584432d39aae"
+            "q": food["name"],  # Use the name key from each dictionary
+            "hl": "en",
+            "gl": "us",
+            "api_key": "f1364074a82eef5ce493df6854fc7f243f458fd0cc555c46037b584432d39aae"
         }
 
         search = GoogleSearch(params)
         results = search.get_dict()
         recipe_results = results.get("recipes_results", [])
-        all_recipes_results.extend(recipe_results)
+
+        if recipe_results:
+            all_recipes_results.append(recipe_results[0])
 
     return all_recipes_results
 
-list = query_recipe_API()
-print(list)
+def populate_database_with_food_info():
+    '''
+    Populates the database with food names in the food table
+    '''
+    with get_db() as connection:
+        with connection.cursor() as cursor:
+            recipes = get_recipe_array()
+            insert_query = '''
+                INSERT IGNORE INTO food (name, ethnic_origin, meal_course)
+                VALUES (%s, %s, %s)
+            '''
+            for food in recipes:
+                name = food["name"]
+                ethnic_origin = food["ethnic_origin"]
+                meal_course = food["meal_course"]
+                cursor.execute(insert_query, (name, ethnic_origin, meal_course))
+            
+            connection.commit()
+                
+                
+                    
 
+
+def get_recipe_array():
+    '''
+    Returns an array of dictionaries for our starter foods,
+    each dictionary includes the name, ethnic origin, and meal course.
+    '''
+    recipes = [
+        {"name": "Cheesecake", "ethnic_origin": "Western", "meal_course": "Dessert"},
+        {"name": "Spaghetti Bolognese", "ethnic_origin": "Italian", "meal_course": "Dinner"},
+        {"name": "Chicken Curry", "ethnic_origin": "Indian", "meal_course": "Dinner"},
+        {"name": "Vegetable Stir Fry", "ethnic_origin": "Asian", "meal_course": "Dinner"},
+        {"name": "Beef Stew", "ethnic_origin": "Western", "meal_course": "Dinner"},
+        {"name": "Quiche Lorraine", "ethnic_origin": "French", "meal_course": "Breakfast/Lunch"},
+        {"name": "Margherita Pizza", "ethnic_origin": "Italian", "meal_course": "Lunch/Dinner"},
+        {"name": "Caesar Salad", "ethnic_origin": "Italian", "meal_course": "Lunch/Dinner"},
+        {"name": "Grilled Salmon", "ethnic_origin": "General", "meal_course": "Dinner"},
+        {"name": "Ratatouille", "ethnic_origin": "French", "meal_course": "Dinner"},
+        {"name": "Pancakes", "ethnic_origin": "Western", "meal_course": "Breakfast"},
+        {"name": "Tacos", "ethnic_origin": "Mexican", "meal_course": "Lunch/Dinner"},
+        {"name": "Tomato Soup", "ethnic_origin": "General", "meal_course": "Lunch/Dinner"},
+        {"name": "Lasagna", "ethnic_origin": "Italian", "meal_course": "Dinner"},
+        {"name": "Hamburger", "ethnic_origin": "American", "meal_course": "Lunch/Dinner"},
+        {"name": "Pad Thai", "ethnic_origin": "Thai", "meal_course": "Dinner"},
+        {"name": "French Onion Soup", "ethnic_origin": "French", "meal_course": "Lunch/Dinner"},
+        {"name": "Chocolate Cake", "ethnic_origin": "Western", "meal_course": "Dessert"},
+        {"name": "Sushi Rolls", "ethnic_origin": "Japanese", "meal_course": "Lunch/Dinner"},
+        {"name": "Banana Bread", "ethnic_origin": "Western", "meal_course": "Breakfast/Dessert"}
+    ]
+    return recipes                            
+
+create_tables()
+populate_database_with_users()
+populate_database_with_food_info()
 
 
 
