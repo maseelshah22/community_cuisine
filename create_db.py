@@ -1,5 +1,7 @@
 import pymysql
 from flask import Flask
+from serpapi import GoogleSearch
+
 
 def get_db():
     return pymysql.connect(
@@ -170,6 +172,52 @@ def populate_database_with_users():
             ''')
             connection.commit()
 
+def query_recipe_API():
+    '''
+    Queries the recipe API and returns a list containing all recipe information
+    '''
+    recipes = [
+    "Cheesecake",
+    "Spaghetti Bolognese",
+    "Chicken Curry",
+    "Vegetable Stir Fry",
+    "Beef Stew",
+    "Quiche Lorraine",
+    "Margherita Pizza",
+    "Caesar Salad",
+    "Grilled Salmon",
+    "Ratatouille",
+    "Pancakes",
+    "Tacos",
+    "Tomato Soup",
+    "Lasagna",
+    "Hamburger",
+    "Pad Thai",
+    "French Onion Soup",
+    "Chocolate Cake",
+    "Sushi Rolls",
+    "Banana Bread"
+    ]
+
+    all_recipes_results = []
+
+    for recipe in recipes:
+        params = {
+        "q": recipe,
+        "hl": "en",
+        "gl": "us",
+        "api_key": "f1364074a82eef5ce493df6854fc7f243f458fd0cc555c46037b584432d39aae"
+        }
+
+        search = GoogleSearch(params)
+        results = search.get_dict()
+        recipe_results = results.get("recipes_results", [])
+        all_recipes_results.extend(recipe_results)
+
+    return all_recipes_results
+
+list = query_recipe_API()
+print(list)
 
 
 
