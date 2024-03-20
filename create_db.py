@@ -255,6 +255,8 @@ def get_recipe_array():
 # create_tables()
 # populate_database_with_users()
 # populate_database_with_food_info()
+list = query_recipe_API()
+print(list)
 
 
 
