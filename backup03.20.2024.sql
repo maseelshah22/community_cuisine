@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 20, 2024 at 04:37 PM
+-- Generation Time: Mar 20, 2024 at 05:02 PM
 -- Server version: 10.6.16-MariaDB-0ubuntu0.22.04.1
 -- PHP Version: 8.1.2-1ubuntu2.14
 
@@ -93,6 +93,82 @@ CREATE TABLE `ingredients` (
   `ingredient_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `ingredients`
+--
+
+INSERT INTO `ingredients` (`ingredient_id`, `name`) VALUES
+(70, 'all purpose flour'),
+(16, 'baby corn'),
+(27, 'bacon'),
+(49, 'baking powder'),
+(48, 'baking soda'),
+(22, 'balsamic vinegar'),
+(69, 'bay leaves'),
+(8, 'beef bouillon cubes'),
+(24, 'beef broth'),
+(23, 'boneless beef chuck'),
+(20, 'brown sugar'),
+(80, 'carrot'),
+(52, 'cheddar cheese'),
+(13, 'chicken broth'),
+(59, 'chicken stock'),
+(73, 'chocolate buttercream frosting'),
+(15, 'cinnamon'),
+(71, 'coconut milk'),
+(72, 'coconut oil'),
+(1, 'cream cheese'),
+(82, 'dark brown sugar'),
+(37, 'dijon mustard'),
+(47, 'egg'),
+(30, 'egg white'),
+(75, 'eggs'),
+(54, 'flour tortillas'),
+(35, 'fresh basil'),
+(33, 'fresh mozzarella balls'),
+(12, 'fresh tomatoes'),
+(45, 'garlic powder'),
+(3, 'graham cracker crumbs'),
+(76, 'grain white rice'),
+(6, 'ground beef'),
+(14, 'heavy cream'),
+(57, 'heavy whipping cream'),
+(61, 'italian sausage'),
+(64, 'lasagna noodles'),
+(51, 'lean ground beef'),
+(4, 'lemon juice'),
+(41, 'lemon pepper'),
+(40, 'parmesan cheese'),
+(65, 'pasta sauce'),
+(26, 'pie crust'),
+(46, 'plain flour'),
+(79, 'red onion'),
+(55, 'red onions'),
+(34, 'red pepper flakes'),
+(7, 'red wine'),
+(36, 'red wine vinegar'),
+(78, 'rice vinegar'),
+(63, 'ricotta cheese'),
+(85, 'ripe bananas'),
+(38, 'romaine lettuce'),
+(44, 'salmon fillets'),
+(56, 'san marzano'),
+(32, 'san marzano tomatoes'),
+(28, 'sharp white cheddar'),
+(11, 'skinless chicken breasts'),
+(2, 'sour cream'),
+(19, 'soy sauce'),
+(77, 'sriracha sauce'),
+(60, 'sugar'),
+(17, 'sugar snap peas'),
+(9, 'tomato paste'),
+(74, 'unsweetened cocoa powder'),
+(5, 'vanilla extract'),
+(18, 'water chestnuts'),
+(66, 'white wine'),
+(31, 'whole wheat pizza'),
+(10, 'worcestershire sauce');
 
 -- --------------------------------------------------------
 
@@ -251,7 +327,7 @@ ALTER TABLE `food`
 --
 ALTER TABLE `ingredients`
   ADD PRIMARY KEY (`ingredient_id`),
-  ADD UNIQUE KEY `ingredient_id` (`ingredient_id`);
+  ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Indexes for table `made_of`
@@ -315,7 +391,7 @@ ALTER TABLE `food`
 -- AUTO_INCREMENT for table `ingredients`
 --
 ALTER TABLE `ingredients`
-  MODIFY `ingredient_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ingredient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- AUTO_INCREMENT for table `recipe`
