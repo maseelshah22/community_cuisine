@@ -197,7 +197,8 @@ def query_recipe_API():
         recipe_results = results.get("recipes_results", [])
 
         if recipe_results:
-            all_recipes_results.append(recipe_results[0])
+            recipe_with_name = {**recipe_results[0], "food_name": food["name"]}
+            all_recipes_results.append(recipe_with_name)
 
     return all_recipes_results
 
@@ -218,6 +219,34 @@ def populate_database_with_food_info():
                 meal_course = food["meal_course"]
                 cursor.execute(insert_query, (name, ethnic_origin, meal_course))
             
+            connection.commit()
+
+def populate_recipe_table():
+    '''
+    Populates the recipe table with recipes from the recipe array,
+    linking each recipe to its corresponding food item by food_id.
+    '''
+    recipes = query_recipe_API()
+
+    with get_db() as connection:
+        with connection.cursor() as cursor:
+            for recipe in recipes:
+                title = recipe.get("title")
+                food_name = recipe.get("food_name")
+                
+                cursor.execute('''
+                    SELECT food_id FROM food WHERE name = %s
+                ''', (food_name,))
+                result = cursor.fetchone()
+
+                if result:
+                    food_id = result['food_id']
+                    
+                    cursor.execute('''
+                        INSERT IGNORE INTO recipe (title, food_id)
+                        VALUES (%s, %s)
+                    ''', (title, food_id))
+                
             connection.commit()
                 
                 
@@ -255,8 +284,7 @@ def get_recipe_array():
 # create_tables()
 # populate_database_with_users()
 # populate_database_with_food_info()
-list = query_recipe_API()
-print(list)
+#populate_recipe_table()
 
 
 
