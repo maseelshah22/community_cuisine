@@ -14,7 +14,7 @@ def get_db():
 with get_db() as connection: 
     with connection.cursor() as cursor:
         cursor.execute('''
-            CREATE TABLE users (
+            CREATE TABLE IF NOT EXISTS users (
                 username VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL,
                 password VARCHAR(255) NOT NULL,
@@ -24,7 +24,7 @@ with get_db() as connection:
         ''')
          
         cursor.execute('''
-            CREATE TABLE person_name (
+            CREATE TABLE IF NOT EXISTS person_name (
                 username VARCHAR(255) NOT NULL,
                 first VARCHAR(255) NOT NULL,
                 last VARCHAR(255) NOT NULL,
@@ -34,7 +34,7 @@ with get_db() as connection:
         ''')
 
         cursor.execute('''
-            CREATE TABLE food (
+            CREATE TABLE IF NOT EXISTS food (
                 food_id INT NOT NULL AUTO_INCREMENT,
                 ethnic_origin VARCHAR(255) NOT NULL,
                 meal_course VARCHAR(255) NOT NULL,
@@ -44,7 +44,7 @@ with get_db() as connection:
         ''')
 
         cursor.execute('''
-            CREATE TABLE recipe (
+            CREATE TABLE IF NOT EXISTS recipe (
                 recipe_id INT NOT NULL AUTO_INCREMENT,
                 title VARCHAR(255) NOT NULL,
                 food_id INT NOT NULL,
@@ -55,7 +55,7 @@ with get_db() as connection:
         ''')
 
         cursor.execute('''
-            CREATE TABLE dietary_warnings (
+            CREATE TABLE IF NOT EXISTS dietary_warnings (
                 recipe_id INT NOT NULL,
                 spice_level INT NOT NULL,
                 restrictions VARCHAR(255) NOT NULL,
@@ -66,7 +66,7 @@ with get_db() as connection:
         ''')
 
         cursor.execute('''
-            CREATE TABLE ingredients (
+            CREATE TABLE IF NOT EXISTS ingredients (
                 ingredient_id INT NOT NULL AUTO_INCREMENT,
                 name VARCHAR(255) NOT NULL,
                 PRIMARY KEY (ingredient_id),
@@ -75,7 +75,7 @@ with get_db() as connection:
         ''')
 
         cursor.execute('''
-            CREATE TABLE made_of (
+            CREATE TABLE IF NOT EXISTS made_of (
                 ingredient_id INT NOT NULL,
                 recipe_id INT NOT NULL,
                 quantity INT NOT NULL,
@@ -87,7 +87,7 @@ with get_db() as connection:
         ''')
 
         cursor.execute('''
-            CREATE TABLE creates (
+            CREATE TABLE IF NOT EXISTS creates (
                 recipe_id INT NOT NULL,
                 username VARCHAR(255) NOT NULL,
                 PRIMARY KEY (recipe_id, username),
@@ -98,7 +98,7 @@ with get_db() as connection:
         ''')
         
         cursor.execute('''
-            CREATE TABLE reviews (
+            CREATE TABLE IF NOT EXISTS reviews (
                 review_id INT NOT NULL AUTO_INCREMENT,
                 recipe_id INT NOT NULL,
                 username VARCHAR(255) NOT NULL,
@@ -110,7 +110,7 @@ with get_db() as connection:
         ''')
 
         cursor.execute('''
-            CREATE TABLE rating (
+            CREATE TABLE IF NOT EXISTS rating (
                 review_id INT NOT NULL,
                 recipe_id INT NOT NULL,
                 username VARCHAR(255) NOT NULL,
