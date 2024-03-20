@@ -177,6 +177,7 @@ def query_recipe_API():
     '''
     Queries the recipe API and returns a list containing information for one recipe per item
     from the recipe array, using only the name of each food for the query.
+    AVOID USING THIS FUNCTION WHEN POSSIBLE, IT WILL USE UP ALL OF YOUR API QUERIES
     '''
     
     recipes = get_recipe_array()
@@ -185,7 +186,7 @@ def query_recipe_API():
 
     for food in recipes:
         params = {
-            "q": food["name"],  # Use the name key from each dictionary
+            "q": food["name"],
             "hl": "en",
             "gl": "us",
             "api_key": "f1364074a82eef5ce493df6854fc7f243f458fd0cc555c46037b584432d39aae"
@@ -221,8 +222,6 @@ def populate_database_with_food_info():
                 
                 
                     
-
-
 def get_recipe_array():
     '''
     Returns an array of dictionaries for our starter foods,
@@ -252,9 +251,10 @@ def get_recipe_array():
     ]
     return recipes                            
 
-create_tables()
-populate_database_with_users()
-populate_database_with_food_info()
+
+# create_tables()
+# populate_database_with_users()
+# populate_database_with_food_info()
 
 
 
