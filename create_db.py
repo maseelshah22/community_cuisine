@@ -132,27 +132,45 @@ def create_tables():
 
 def populate_database_with_users():
     '''
-    Populates the database with users in the user table
+    Populates the database with users in the user table and person_name table
     '''
     with get_db() as connection:
         with connection.cursor() as cursor:
             cursor.execute('''
-                INSERT INTO users (username, email, password)
+                INSERT IGNORE INTO users (username, email, password)
                 VALUES ('hayden.johnson', 'cxy6nx@virginia.edu', 'securepassword')
             ''')
             cursor.execute('''
-                INSERT INTO users (username, email, password)
+                INSERT IGNORE INTO users (username, email, password)
                 VALUES ('maseel.shah', 'dda5us@virginia.edu', 'moresecurepassword')
             ''')
             cursor.execute('''
-                INSERT INTO users (username, email, password)
+                INSERT IGNORE INTO users (username, email, password)
                 VALUES ('ilyas.jaghoori', 'zyh7ac@virginia.edu', 'evenmoresecurepassword')
             ''')
             cursor.execute('''
-                INSERT INTO users (username, email, password)
+                INSERT IGNORE INTO users (username, email, password)
                 VALUES ('mohammad.murad', 'vdr4jr@virginia.edu', 'mostsecurepassword')
             ''')
+            cursor.execute('''
+                INSERT IGNORE INTO person_name (username, first, last)
+                VALUES ('hayden.johnson', 'Hayden', 'Johnson')
+            ''')
+            cursor.execute('''
+                INSERT IGNORE INTO person_name (username, first, last)
+                VALUES ('maseel.shah', 'Maseel', 'Shah')
+            ''')
+            cursor.execute('''
+                INSERT IGNORE INTO person_name (username, first, last)
+                VALUES ('ilyas.jaghoori', 'Ilyas', 'Jaghoori')
+            ''')
+            cursor.execute('''
+                INSERT IGNORE INTO person_name (username, first, last)
+                VALUES ('mohammad.murad', 'Mohammad', 'Murad')
+            ''')
             connection.commit()
+
+
 
 
 
