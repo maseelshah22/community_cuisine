@@ -1,4 +1,5 @@
 import pymysql
+import random
 from flask import Flask
 from serpapi import GoogleSearch
 
@@ -299,6 +300,51 @@ def populate_made_of_table():
                             ''', (ingredient_id, recipe_id))
             connection.commit()
 
+def populate_creates_table():
+    '''
+    Populates the creates table with the recipes and users from the recipe array,
+    '''
+    usernames = ['hayden.johnson', 'maseel.shah', 'ilyas.jaghoori', 'mohammad.murad']
+    
+    recipes = query_recipe_API()
+    with get_db() as connection:
+        with connection.cursor() as cursor:
+            for recipe in recipes:
+                cursor.execute('''
+                    SELECT recipe_id FROM recipe WHERE title = %s
+                ''', (recipe["title"],))
+                result = cursor.fetchone()
+                if result:
+                    recipe_id = result['recipe_id']
+                    random_username = random.choice(usernames)
+                    cursor.execute('''
+                        INSERT IGNORE INTO creates (recipe_id, username)
+                        VALUES (%s, %s)
+                    ''', (recipe_id, random_username))
+            connection.commit()
+
+def populate_reviews_table():
+    '''
+    Populates the reviews table with the recipe_id and username
+    '''
+    usernames = ['hayden.johnson', 'maseel.shah', 'ilyas.jaghoori', 'mohammad.murad']
+    
+    recipes = query_recipe_API()
+    with get_db() as connection:
+        with connection.cursor() as cursor:
+            for recipe in recipes:
+                cursor.execute('''
+                    SELECT recipe_id FROM recipe WHERE title = %s
+                ''', (recipe["title"],))
+                result = cursor.fetchone()
+                if result:
+                    recipe_id = result['recipe_id']
+                    random_username = random.choice(usernames)
+                    cursor.execute('''
+                        INSERT IGNORE INTO reviews (recipe_id, username)
+                        VALUES (%s, %s)
+                    ''', (recipe_id, random_username))
+            connection.commit()
 
 
 def get_recipe_array():
@@ -337,6 +383,8 @@ def set_up_database():
     populate_recipe_table()
     populate_ingredients_table()
     populate_made_of_table()
+    populate_creates_table()
+    populate_reviews_table()
 
 
 
