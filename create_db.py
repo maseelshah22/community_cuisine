@@ -346,6 +346,33 @@ def populate_reviews_table():
                     ''', (recipe_id, random_username))
             connection.commit()
 
+def populate_rating_table():
+    '''
+    Populates the rating table with random ratings for each review.
+    '''
+    comments = [
+        'Loved it!', 'Pretty good', 'Okay, not great', 'Disappointed', 'Would not make again',
+        'Delicious and easy to make!', 'Too spicy for my taste', 'Wonderful flavor', 
+        'Not as described', 'Perfect for our dinner!'
+    ]
+    
+    with get_db() as connection:
+        with connection.cursor() as cursor:
+            cursor.execute('''
+                SELECT review_id, recipe_id, username FROM reviews
+            ''')
+            reviews = cursor.fetchall()
+            for review in reviews:
+                star_rating = random.randint(1, 5)
+                comment = random.choice(comments + [None] * 5) 
+                cursor.execute('''
+                    INSERT INTO rating (review_id, recipe_id, username, star, comment)
+                    VALUES (%s, %s, %s, %s, %s)
+                ''', (review['review_id'], review['recipe_id'], review['username'], star_rating, comment))
+                
+            connection.commit()
+
+
 
 def get_recipe_array():
     '''
@@ -385,6 +412,7 @@ def set_up_database():
     populate_made_of_table()
     populate_creates_table()
     populate_reviews_table()
+    populate_rating_table()
 
 
 
