@@ -68,6 +68,7 @@ def create_tables():
                     PRIMARY KEY (recipe_id),
                     UNIQUE (recipe_id),
                     FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id)
+                    CHECK (spice_level BETWEEN 1 AND 5) -- adds the constraint of spice level
                 )
             ''')
 
