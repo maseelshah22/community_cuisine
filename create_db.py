@@ -3,7 +3,6 @@ import random
 from flask import Flask
 from serpapi import GoogleSearch
 
-
 def get_db():
     return pymysql.connect(
         host='mysql01.cs.virginia.edu',
@@ -12,7 +11,6 @@ def get_db():
         database='dda5us',
         cursorclass=pymysql.cursors.DictCursor
     )
-
 
 def create_tables():
     '''
@@ -372,7 +370,35 @@ def populate_rating_table():
                 
             connection.commit()
 
+def populate_dietary_warnings_table():
+    '''
+    Populates the dietary_warnings table with random spice levels and restrictions for each recipe.
+    '''
+    restrictions_list = [
+        'None', 'Gluten Free', 'Nut Free', 'Dairy Free', 'Vegan', 'Vegetarian', 
+        'Low Sugar', 'Egg Free', 'Soy Free', 'Fish Free'
+    ]
+    
+    with get_db() as connection:
+        with connection.cursor() as cursor:
+            cursor.execute('''
+                SELECT recipe_id FROM recipe
+            ''')
+            recipes = cursor.fetchall()
+            
+            for recipe in recipes:
+                spice_level = random.randint(1, 5)
+                num_restrictions = random.randint(0, 3)
+                restrictions = ', '.join(random.sample(restrictions_list, num_restrictions))
+                
+                restrictions = restrictions if restrictions else 'None'
 
+                cursor.execute('''
+                    INSERT INTO dietary_warnings (recipe_id, spice_level, restrictions)
+                    VALUES (%s, %s, %s)
+                ''', (recipe['recipe_id'], spice_level, restrictions))
+                
+            connection.commit()
 
 def get_recipe_array():
     '''
@@ -404,6 +430,9 @@ def get_recipe_array():
     return recipes                            
 
 def set_up_database():
+    '''
+    Adds all our starter data to the database. This may take awhile because the API is somewhat slow.
+    '''
     create_tables()
     populate_database_with_users()
     populate_database_with_food_info()
@@ -413,8 +442,7 @@ def set_up_database():
     populate_creates_table()
     populate_reviews_table()
     populate_rating_table()
-
-
+    populate_dietary_warnings_table()
 
 
     

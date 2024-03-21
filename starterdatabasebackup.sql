@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 20, 2024 at 05:02 PM
+-- Generation Time: Mar 20, 2024 at 09:02 PM
 -- Server version: 10.6.16-MariaDB-0ubuntu0.22.04.1
 -- PHP Version: 8.1.2-1ubuntu2.14
 
@@ -32,6 +32,26 @@ CREATE TABLE `creates` (
   `username` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `creates`
+--
+
+INSERT INTO `creates` (`recipe_id`, `username`) VALUES
+(1, 'hayden.johnson'),
+(2, 'mohammad.murad'),
+(3, 'ilyas.jaghoori'),
+(4, 'ilyas.jaghoori'),
+(5, 'maseel.shah'),
+(6, 'maseel.shah'),
+(7, 'hayden.johnson'),
+(8, 'mohammad.murad'),
+(10, 'mohammad.murad'),
+(12, 'maseel.shah'),
+(13, 'hayden.johnson'),
+(14, 'ilyas.jaghoori'),
+(15, 'maseel.shah'),
+(17, 'mohammad.murad');
+
 -- --------------------------------------------------------
 
 --
@@ -43,6 +63,29 @@ CREATE TABLE `dietary_warnings` (
   `spice_level` int(11) NOT NULL,
   `restrictions` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `dietary_warnings`
+--
+
+INSERT INTO `dietary_warnings` (`recipe_id`, `spice_level`, `restrictions`) VALUES
+(1, 5, 'Vegetarian'),
+(2, 2, 'Gluten Free, Low Sugar, None'),
+(3, 3, 'Soy Free'),
+(4, 1, 'None'),
+(5, 1, 'None'),
+(6, 1, 'Vegan, Egg Free'),
+(7, 2, 'Vegan, Fish Free'),
+(8, 4, 'Fish Free'),
+(9, 5, 'None'),
+(10, 4, 'Dairy Free, Egg Free, None'),
+(11, 1, 'Vegan, Nut Free'),
+(12, 4, 'None'),
+(13, 5, 'Low Sugar, Fish Free'),
+(14, 3, 'None'),
+(15, 1, 'None, Vegan, Soy Free'),
+(16, 5, 'None, Vegetarian'),
+(17, 4, 'Vegetarian, Vegan');
 
 -- --------------------------------------------------------
 
@@ -178,9 +221,84 @@ INSERT INTO `ingredients` (`ingredient_id`, `name`) VALUES
 
 CREATE TABLE `made_of` (
   `ingredient_id` int(11) NOT NULL,
-  `recipe_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL
+  `recipe_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `made_of`
+--
+
+INSERT INTO `made_of` (`ingredient_id`, `recipe_id`) VALUES
+(1, 1),
+(2, 1),
+(2, 17),
+(3, 1),
+(4, 1),
+(5, 1),
+(5, 10),
+(6, 2),
+(7, 2),
+(7, 5),
+(8, 2),
+(9, 2),
+(9, 5),
+(10, 2),
+(10, 8),
+(10, 14),
+(11, 3),
+(12, 3),
+(13, 3),
+(14, 3),
+(14, 6),
+(15, 3),
+(15, 17),
+(16, 4),
+(17, 4),
+(18, 4),
+(19, 4),
+(20, 4),
+(22, 5),
+(23, 5),
+(24, 5),
+(24, 14),
+(26, 6),
+(27, 6),
+(28, 6),
+(30, 6),
+(31, 7),
+(32, 7),
+(33, 7),
+(34, 7),
+(35, 7),
+(36, 8),
+(37, 8),
+(38, 8),
+(40, 8),
+(40, 12),
+(46, 10),
+(47, 10),
+(48, 10),
+(48, 17),
+(49, 10),
+(51, 13),
+(56, 12),
+(57, 12),
+(59, 12),
+(60, 12),
+(61, 13),
+(63, 13),
+(64, 13),
+(65, 13),
+(66, 14),
+(69, 14),
+(70, 14),
+(71, 15),
+(72, 15),
+(73, 15),
+(74, 15),
+(75, 15),
+(82, 17),
+(85, 17);
 
 -- --------------------------------------------------------
 
@@ -218,6 +336,26 @@ CREATE TABLE `rating` (
   `comment` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `rating`
+--
+
+INSERT INTO `rating` (`review_id`, `recipe_id`, `username`, `star`, `comment`) VALUES
+(1, 1, 'mohammad.murad', 4, 'Perfect for our dinner!'),
+(2, 2, 'ilyas.jaghoori', 2, NULL),
+(3, 3, 'hayden.johnson', 3, 'Not as described'),
+(4, 4, 'ilyas.jaghoori', 3, 'Wonderful flavor'),
+(5, 5, 'ilyas.jaghoori', 5, NULL),
+(6, 6, 'maseel.shah', 4, 'Delicious and easy to make!'),
+(7, 7, 'ilyas.jaghoori', 2, NULL),
+(8, 8, 'ilyas.jaghoori', 5, 'Okay, not great'),
+(9, 10, 'maseel.shah', 3, 'Pretty good'),
+(10, 12, 'hayden.johnson', 5, 'Perfect for our dinner!'),
+(11, 13, 'mohammad.murad', 4, 'Perfect for our dinner!'),
+(12, 14, 'ilyas.jaghoori', 5, NULL),
+(13, 15, 'mohammad.murad', 2, 'Loved it!'),
+(14, 17, 'ilyas.jaghoori', 4, 'Wonderful flavor');
+
 -- --------------------------------------------------------
 
 --
@@ -251,16 +389,7 @@ INSERT INTO `recipe` (`recipe_id`, `title`, `food_id`) VALUES
 (14, 'French Onion Soup', 17),
 (15, 'The Best Chocolate Cake Recipe {Ever}', 18),
 (16, 'Vegetarian Sushi Rolls', 19),
-(17, 'My Favorite Banana Bread', 20),
-(26, 'Grilled Salmon', 9),
-(27, 'Best Fluffy Pancakes', 11),
-(28, 'Ground Beef Tacos', 12),
-(29, 'Creamy Tomato Soup Recipe', 13),
-(30, 'Easy Homemade Lasagna', 14),
-(31, 'French Onion Soup', 17),
-(32, 'The Best Chocolate Cake Recipe {Ever}', 18),
-(33, 'Vegetarian Sushi Rolls', 19),
-(34, 'My Favorite Banana Bread', 20);
+(17, 'My Favorite Banana Bread', 20);
 
 -- --------------------------------------------------------
 
@@ -273,6 +402,26 @@ CREATE TABLE `reviews` (
   `recipe_id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reviews`
+--
+
+INSERT INTO `reviews` (`review_id`, `recipe_id`, `username`) VALUES
+(1, 1, 'mohammad.murad'),
+(2, 2, 'ilyas.jaghoori'),
+(3, 3, 'hayden.johnson'),
+(4, 4, 'ilyas.jaghoori'),
+(5, 5, 'ilyas.jaghoori'),
+(6, 6, 'maseel.shah'),
+(7, 7, 'ilyas.jaghoori'),
+(8, 8, 'ilyas.jaghoori'),
+(9, 10, 'maseel.shah'),
+(10, 12, 'hayden.johnson'),
+(11, 13, 'mohammad.murad'),
+(12, 14, 'ilyas.jaghoori'),
+(13, 15, 'mohammad.murad'),
+(14, 17, 'ilyas.jaghoori');
 
 -- --------------------------------------------------------
 
@@ -403,7 +552,7 @@ ALTER TABLE `recipe`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Constraints for dumped tables
