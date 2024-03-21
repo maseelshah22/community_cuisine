@@ -445,7 +445,7 @@ def set_up_database():
     populate_rating_table()
     populate_dietary_warnings_table()
 
-def create_triggers() {
+def create_triggers():
     '''
     Creates this first trigger to make sure users only review a recipe once 
     '''
@@ -469,7 +469,7 @@ def create_triggers() {
         with connection.cursor() as cursor:
             cursor.execute(trigger_sql)
         connection.commit()
-}
+
 
     
         
