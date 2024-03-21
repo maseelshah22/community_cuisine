@@ -81,12 +81,11 @@ def create_tables():
                 )
             ''')
 
-            # we should probably remove quantity, it just complicates things
+            # I removed quantity, it just complicated things
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS made_of (
                     ingredient_id INT NOT NULL,
                     recipe_id INT NOT NULL,
-                    quantity INT NOT NULL,
                     PRIMARY KEY (ingredient_id, recipe_id),
                     UNIQUE (ingredient_id, recipe_id),
                     FOREIGN KEY (ingredient_id) REFERENCES ingredients(ingredient_id),
@@ -269,9 +268,39 @@ def populate_ingredients_table():
                     ''', (ingredient_lowercase,))
 
             connection.commit()
-                
-                
-                    
+
+def populate_made_of_table():
+    '''
+    Populates the made_of table with the ingredients and recipes from the recipe array,
+    '''
+    recipes = query_recipe_API()
+    with get_db() as connection:
+        with connection.cursor() as cursor:
+            for recipe in recipes:
+                ingredients = recipe.get("ingredients", [])
+                for ingredient in ingredients:
+        
+                    ingredient_lowercase = ingredient.lower()
+                    cursor.execute('''
+                        SELECT ingredient_id FROM ingredients WHERE name = %s
+                    ''', (ingredient_lowercase,))
+                    result = cursor.fetchone()
+                    if result:
+                        ingredient_id = result['ingredient_id']
+                        cursor.execute('''
+                            SELECT recipe_id FROM recipe WHERE title = %s
+                        ''', (recipe["title"],))
+                        result = cursor.fetchone()
+                        if result:
+                            recipe_id = result['recipe_id']
+                            cursor.execute('''
+                                INSERT IGNORE INTO made_of (ingredient_id, recipe_id)
+                                VALUES (%s, %s)
+                            ''', (ingredient_id, recipe_id))
+            connection.commit()
+
+
+
 def get_recipe_array():
     '''
     Returns an array of dictionaries for our starter foods,
@@ -307,6 +336,7 @@ def set_up_database():
     populate_database_with_food_info()
     populate_recipe_table()
     populate_ingredients_table()
+    populate_made_of_table()
 
 
 
