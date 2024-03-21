@@ -434,6 +434,7 @@ def set_up_database():
     Adds all our starter data to the database. This may take awhile because the API is somewhat slow.
     '''
     create_tables()
+    create_triggers()
     populate_database_with_users()
     populate_database_with_food_info()
     populate_recipe_table()
