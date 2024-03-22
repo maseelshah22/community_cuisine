@@ -470,7 +470,17 @@ def create_triggers():
 
     with get_db() as connection:
         with connection.cursor() as cursor:
-            cursor.execute(trigger_sql)
+            cursor.execute('''
+            CREATE TABLE IF NOT EXISTS reviews(  
+                    review_id INT NOT NULL AUTO_INCREMENT,
+                    recipe_id INT NOT NULL,
+                    username VARCHAR(255) NOT NULL,
+                    PRIMARY KEY (review_id, recipe_id, username),
+                    UNIQUE (recipe_id, username),
+                    FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id),
+                    FOREIGN KEY (username) REFERENCES users(username)
+                )
+            ''')
         connection.commit()
 
 
