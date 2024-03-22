@@ -110,7 +110,7 @@ def create_tables():
                     recipe_id INT NOT NULL,
                     username VARCHAR(255) NOT NULL,
                     PRIMARY KEY (review_id, recipe_id, username),
-                    UNIQUE (review_id, recipe_id, username),
+                    UNIQUE (recipe_id, username),
                     FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id),
                     FOREIGN KEY (username) REFERENCES users(username)
                 )
@@ -451,20 +451,22 @@ def create_triggers():
     Creates this first trigger to make sure users only review a recipe once 
     '''
 
-    trigger_sql = '''
-    CREATE TRIGGER prevent_duplicate_reviews
-    BEFORE INSERT ON reviews 
-    FOR EACH ROW 
-    BEGIN 
-        IF EXISTS ( 
-            SELECT 1 
-            FROM reviews 
-            WHERE username = NEW.username AND recipe_id = NEW.recipe_id 
-            ) THEN 
-                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'User has already reviewed this recipe'; 
-            END IF; 
-        END;
-    '''
+
+    # Need to rewrite the trigger to actually do something
+    # trigger_sql = '''
+    # CREATE TRIGGER prevent_duplicate_reviews
+    # BEFORE INSERT ON reviews 
+    # FOR EACH ROW 
+    # BEGIN 
+    #     IF EXISTS ( 
+    #         SELECT 1 
+    #         FROM reviews 
+    #         WHERE username = NEW.username AND recipe_id = NEW.recipe_id 
+    #         ) THEN 
+    #             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'User has already reviewed this recipe'; 
+    #         END IF; 
+    #     END;
+    # '''
 
     with get_db() as connection:
         with connection.cursor() as cursor:
