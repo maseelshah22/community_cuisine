@@ -61,6 +61,12 @@ def create_tables():
             ''')
 
             cursor.execute('''
+                ALTER TABLE recipe 
+                ADD COLUMN IF NOT EXISTS average_rating DECIMAL(3, 2) DEFAULT NULL;
+            
+            ''')
+
+            cursor.execute('''
                 CREATE TABLE IF NOT EXISTS dietary_warnings (
                     recipe_id INT NOT NULL,
                     spice_level INT NOT NULL,
@@ -451,28 +457,22 @@ def create_triggers():
     Creates this first trigger to make sure users only review a recipe once 
     '''
 
+    update_average_rating_sql = '''
+    CREATE TRIGGER IF NOT EXISTS UpdateAverageRating 
+    AFTER INSERT ON rating 
+    FOR EACH ROW 
+    BEGIN 
+        DECLARE new_avg DECIMAL(3, 2); 
+        SELECT AVG(star) INTO new_avg FROM rating WHERE recipe_id = NEW.recipe_id; 
+        UPDATE recipe SET average_rating = new_avg WHERE recipe_id = NEW.recipe_id; 
+    END;
+    '''
+            
 
-    # Need to rewrite the trigger to actually do something
-    # trigger_sql = '''
-    # CREATE TRIGGER prevent_duplicate_reviews
-    # BEFORE INSERT ON reviews 
-    # FOR EACH ROW 
-    # BEGIN 
-    #     IF EXISTS ( 
-    #         SELECT 1 
-    #         FROM reviews 
-    #         WHERE username = NEW.username AND recipe_id = NEW.recipe_id 
-    #         ) THEN 
-    #             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'User has already reviewed this recipe'; 
-    #         END IF; 
-    #     END;
-    # '''
 
     with get_db() as connection:
         with connection.cursor() as cursor:
-            cursor.execute('''
-                )
-            ''')
+            cursor.execute(update_average_rating_sql)
         connection.commit()
 
 
