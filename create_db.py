@@ -5,7 +5,7 @@ from serpapi import GoogleSearch
 
 def get_db():
     return pymysql.connect(
-        host='localhost', #mysql01.cs.virginia.edu
+        host='mysql01.cs.virginia.edu', #mysql01.cs.virginia.edu
         user='dda5us',
         password='d@t@b@s3',
         database='dda5us',
