@@ -498,7 +498,7 @@ def create_email_constraint():
     #makes sure email has @ symbol
     add_check_constraint = '''
        ALTER TABLE users
-       ADD CONSTRAINT chek_email_format 
+       ADD CONSTRAINT check_email_format 
        CHECK (email LIKE '%@%.%' AND email NOT LIKE '%@%..%' AND email NOT LIKE '%@.%');
     '''
     with get_db() as connection:
