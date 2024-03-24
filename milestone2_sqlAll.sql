@@ -107,3 +107,58 @@ CREATE TABLE IF NOT EXISTS rating (
                     FOREIGN KEY (username) REFERENCES users(username)
                 )
 
+-- sql we did for inserting starter data
+
+-- insert into users
+INSERT IGNORE INTO users (username, email, password)
+VALUES ('hayden.johnson', 'cxy6nx@virginia.edu', 'securepassword')
+
+INSERT IGNORE INTO users (username, email, password)
+                VALUES ('maseel.shah', 'dda5us@virginia.edu', 'moresecurepassword')
+
+ INSERT IGNORE INTO users (username, email, password)
+                VALUES ('ilyas.jaghoori', 'zyh7ac@virginia.edu', 'evenmoresecurepassword')
+
+INSERT IGNORE INTO users (username, email, password)
+                VALUES ('mohammad.murad', 'vdr4jr@virginia.edu', 'mostsecurepassword')
+
+INSERT IGNORE INTO person_name (username, first, last)
+                VALUES ('hayden.johnson', 'Hayden', 'Johnson')
+
+INSERT IGNORE INTO person_name (username, first, last)
+                VALUES ('maseel.shah', 'Maseel', 'Shah')
+
+INSERT IGNORE INTO person_name (username, first, last)
+                VALUES ('ilyas.jaghoori', 'Ilyas', 'Jaghoori')
+
+INSERT IGNORE INTO person_name (username, first, last)
+                VALUES ('mohammad.murad', 'Mohammad', 'Murad')
+
+-- will not include sql commands for inserting recipe and dietary warnings
+    -- as that information is nested with python syntax, not just in quotes.
+        -- that information can be show in the create_db.py file
+
+-- advanced sql
+
+-- Trigger function make sure users only review a recipe once
+CREATE TRIGGER IF NOT EXISTS UpdateAverageRating 
+    AFTER INSERT ON rating 
+    FOR EACH ROW 
+    BEGIN 
+        DECLARE new_avg DECIMAL(3, 2); 
+        SELECT AVG(star) INTO new_avg FROM rating WHERE recipe_id = NEW.recipe_id; 
+        UPDATE recipe SET average_rating = new_avg WHERE recipe_id = NEW.recipe_id; 
+    END;
+
+-- make sure rating is between 1 and 5
+
+ ALTER TABLE rating
+        ADD CONSTRAINT check_rating_range
+        CHECK (rating >= 1 AND rating <= 5)
+
+-- make sure email is valid
+
+ALTER TABLE users
+       ADD CONSTRAINT chek_email_format 
+       CHECK (email LIKE '%@%.%' AND email NOT LIKE '%@%..%' AND email NOT LIKE '%@.%');
+
