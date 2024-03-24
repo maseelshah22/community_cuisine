@@ -5,7 +5,7 @@ from serpapi import GoogleSearch
 
 def get_db():
     return pymysql.connect(
-        host='mysql01.cs.virginia.edu',
+        host='localhost', #mysql01.cs.virginia.edu
         user='dda5us',
         password='d@t@b@s3',
         database='dda5us',
@@ -476,7 +476,18 @@ def create_triggers():
         connection.commit()
 
 
-    
+def create_check_constraints(): 
+    #makes sure rating is between 1 and 5
+    add_check_constraint = '''
+        ALTER TABLE rating
+        ADD CONSTRAINT check_rating_range
+        CHECK (rating >= 1 AND rating <= 5)
+    '''
+    with get_db() as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(add_check_constraint)
+        connection.commit()
+
         
 
 
