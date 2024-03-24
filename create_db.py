@@ -74,8 +74,12 @@ def create_tables():
                     PRIMARY KEY (recipe_id),
                     UNIQUE (recipe_id),
                     FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id)
-                    CHECK (spice_level BETWEEN 1 AND 5) -- adds the constraint of spice level
                 )
+            ''')
+            cursor.execute('''
+                ALTER TABLE dietary_warnings
+                ADD CONSTRAINT chk_spice_level CHECK (spice_level BETWEEN 1 AND 5);
+            
             ''')
 
             cursor.execute('''
@@ -442,6 +446,7 @@ def set_up_database():
     '''
     create_tables()
     create_triggers()
+    create_check_constraints()
     populate_database_with_users()
     populate_database_with_food_info()
     populate_recipe_table()
@@ -488,7 +493,6 @@ def create_check_constraints():
             cursor.execute(add_check_constraint)
         connection.commit()
 
-        
 
 
 
