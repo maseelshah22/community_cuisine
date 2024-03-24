@@ -154,7 +154,7 @@ CREATE TRIGGER IF NOT EXISTS UpdateAverageRating
 
  ALTER TABLE rating
         ADD CONSTRAINT check_rating_range
-        CHECK (rating >= 1 AND rating <= 5)
+        CHECK (star >= 1 AND star <= 5)
 
 -- make sure email is valid
 
@@ -162,5 +162,131 @@ ALTER TABLE users
        ADD CONSTRAINT chek_email_format 
        CHECK (email LIKE '%@%.%' AND email NOT LIKE '%@%..%' AND email NOT LIKE '%@.%');
 
--- FUTURE SQL COMMANDS TO RUN
+-- FUTURE SQL COMMANDS TO RUN/ WILL BE USED IN PROJECT
+-- will use dummy variable names for high level description
+
+INSERT INTO users (username, email, password) 
+VALUES ('username', 'email@email.com', 'password');
+
+DELETE FROM users WHERE username = 'username';
+
+INSERT INTO person_name (username, first, last) VALUES ('username', 'First', 'Last');
+
+INSERT INTO food (name, ethnic_origin, meal_course) VALUES ('FoodName', 'Origin', 'Course');
+
+DELETE FROM food WHERE name = 'FoodName';
+
+INSERT INTO recipe (title, food_id, average_rating) 
+VALUES ('RecipeTitle', food_id, null);
+
+INSERT INTO dietary_warnings (recipe_id, spice_level, restrictions) 
+VALUES (recipe_id, 3, 'Restrictions');
+
+UPDATE dietary_warnings SET spice_level = 4 WHERE recipe_id = recipe_id;
+
+INSERT INTO ingredients (name) VALUES ('IngredientName');
+
+UPDATE ingredients SET name = 'NewName' WHERE ingredient_id = id;
+
+DELETE FROM ingredients WHERE ingredient_id = id;
+
+INSERT INTO made_of (ingredient_id, recipe_id) VALUES (ingredient_id, recipe_id);
+
+SELECT * FROM food WHERE name = 'FoodName';
+
+SELECT * FROM recipe WHERE title = 'RecipeTitle';
+
+SELECT * FROM dietary_warnings WHERE recipe_id = recipe_id;
+
+SELECT * FROM recipe WHERE meal_course = 'CourseType';
+
+-- all ingredients for a recipe
+SELECT i.* 
+FROM ingredients i INNER JOIN made_of m ON i.ingredient_id = m.ingredient_id 
+WHERE m.recipe_id = recipe_id;
+
+-- all recipes created by a user
+SELECT r.* 
+FROM recipe r INNER JOIN creates c ON r.recipe_id = c.recipe_id 
+WHERE c.username = 'username';
+
+SELECT AVG(star) AS average_rating 
+FROM rating 
+WHERE recipe_id = recipe_id;
+
+--revies and the users who made them
+
+SELECT r.*, u.username 
+FROM reviews r INNER JOIN users u ON r.username = u.username 
+WHERE r.recipe_id = recipe_id;
+
+-- getting a recipe and its ingredients
+
+SELECT r.title AS recipe_title, i.name AS ingredient_name
+FROM recipe r
+INNER JOIN made_of m ON r.recipe_id = m.recipe_id
+INNER JOIN ingredients i ON m.ingredient_id = i.ingredient_id
+WHERE r.recipe_id = recipe_id; 
+
+-- getting a recipe and its dietary warnings
+
+SELECT r.title AS recipe_title, d.spice_level, d.restrictions
+FROM recipe r
+INNER JOIN dietary_warnings d ON r.recipe_id = d.recipe_id
+WHERE r.recipe_id = recipe_id;
+
+-- getting a recipe and its average rating
+
+SELECT r.title AS recipe_title, AVG(star) AS average_rating
+FROM recipe r
+INNER JOIN rating ra ON r.recipe_id = ra.recipe_id
+WHERE r.recipe_id = recipe_id
+
+SELECT r.title, r.recipe_id
+FROM recipe r
+INNER JOIN food f ON r.food_id = f.food_id
+WHERE f.ethnic_origin = 'EthnicBackground';
+
+-- recipes without a certain ingredient
+SELECT r.title AS recipe_title
+FROM recipe r
+LEFT JOIN made_of m ON r.recipe_id = m.recipe_id
+LEFT JOIN ingredients i ON m.ingredient_id = i.ingredient_id
+WHERE i.name IS NULL OR i.name NOT IN ('Ingredient1', 'Ingredient2');
+
+-- recipes without a certain ingredient
+
+SELECT r.title AS recipe_title
+FROM recipe r
+LEFT JOIN dietary_warnings dw ON r.recipe_id = dw.recipe_id
+WHERE dw.restrictions IS NULL OR dw.restrictions NOT LIKE '%DietaryRestriction%';
+
+-- recipes with a certain spice level
+SELECT r.title AS recipe_title
+FROM recipe r 
+INNER JOIN dietary_warnings dw ON r.recipe_id = dw.recipe_id
+WHERE dw.spice_level = 3;
+
+-- recipes with a certain rating
+SELECT r.title AS recipe_title
+FROM recipe r
+INNER JOIN rating rt ON r.recipe_id = rt.recipe_id
+WHERE rt.star = desired_rating;
+
+-- comments for recipe reviews
+SELECT r.comment
+FROM reviews r
+INNER JOIN rating ra ON r.review_id = ra.review_id
+WHERE r.recipe_id = recipe_id;
+
+
+
+
+
+
+
+
+
+
+
 
