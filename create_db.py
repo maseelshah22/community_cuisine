@@ -446,7 +446,7 @@ def set_up_database():
     '''
     create_tables()
     create_triggers()
-    create_check_constraints()
+    create_rating_constraing()
     populate_database_with_users()
     populate_database_with_food_info()
     populate_recipe_table()
@@ -481,7 +481,7 @@ def create_triggers():
         connection.commit()
 
 
-def create_check_constraints(): 
+def create_rating_constraing(): 
     #makes sure rating is between 1 and 5
     add_check_constraint = '''
         ALTER TABLE rating
@@ -493,6 +493,18 @@ def create_check_constraints():
             cursor.execute(add_check_constraint)
         connection.commit()
 
+
+def create_email_constraint(): 
+    #makes sure email has @ symbol
+    add_check_constraint = '''
+       ALTER TABLE users
+       ADD CONSTRAINT chek_email_format 
+       CHECK (email LIKE '%@%.%' AND email NOT LIKE '%@%..%' AND email NOT LIKE '%@.%');
+    '''
+    with get_db() as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(add_check_constraint)
+        connection.commit()
 
 
 
