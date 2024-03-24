@@ -162,3 +162,5 @@ ALTER TABLE users
        ADD CONSTRAINT chek_email_format 
        CHECK (email LIKE '%@%.%' AND email NOT LIKE '%@%..%' AND email NOT LIKE '%@.%');
 
+-- FUTURE SQL COMMANDS TO RUN
+
