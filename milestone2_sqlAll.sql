@@ -3,6 +3,7 @@
 -- SQL we have 
 -- creating tables
 
+
 -- make users table
  CREATE TABLE IF NOT EXISTS users (
                     username VARCHAR(255) NOT NULL,
@@ -162,35 +163,38 @@ ALTER TABLE users
        ADD CONSTRAINT chek_email_format 
        CHECK (email LIKE '%@%.%' AND email NOT LIKE '%@%..%' AND email NOT LIKE '%@.%');
 
+
+
 -- FUTURE SQL COMMANDS TO RUN/ WILL BE USED IN PROJECT
 -- will use dummy variable names for high level description
 
 INSERT INTO users (username, email, password) 
 VALUES ('username', 'email@email.com', 'password');
 
-DELETE FROM users WHERE username = 'username';
-
 INSERT INTO person_name (username, first, last) VALUES ('username', 'First', 'Last');
-
 INSERT INTO food (name, ethnic_origin, meal_course) VALUES ('FoodName', 'Origin', 'Course');
+INSERT INTO recipe (title, food_id,average_rating) VALUES ('RecipeTitle', food_id, average_rating);
+INSERT INTO dietary_warnings (recipe_id, spice_level, restrictions) VALUES (recipe_id, 3, 'Restrictions');
+INSERT INTO ingredients (name) VALUES ('IngredientName');
+INSERT INTO made_of (ingredient_id, recipe_id) VALUES (ingredient_id, recipe_id);
+INSERT INTO creates (recipe_id, username) VALUES (recipe_id, 'username');
+INSERT INTO reviews (review_id, recipe_id, username) VALUES (review_id, recipe_id, 'username');
+INSERT INTO rating (review_id, recipe_id, username, star, comment) VALUES (review_id, recipe_id, 'username', 5, 'Great recipe!');
 
+
+
+DELETE FROM users WHERE username = 'username';
 DELETE FROM food WHERE name = 'FoodName';
 
-INSERT INTO recipe (title, food_id, average_rating) 
-VALUES ('RecipeTitle', food_id, null);
-
-INSERT INTO dietary_warnings (recipe_id, spice_level, restrictions) 
-VALUES (recipe_id, 3, 'Restrictions');
-
-UPDATE dietary_warnings SET spice_level = 4 WHERE recipe_id = recipe_id;
-
-INSERT INTO ingredients (name) VALUES ('IngredientName');
-
-UPDATE ingredients SET name = 'NewName' WHERE ingredient_id = id;
-
 DELETE FROM ingredients WHERE ingredient_id = id;
+DELETE FROM person_name WHERE username = 'username';
+DELETE FROM recipe WHERE recipe_id = recipe_id;
+DELETE FROM dietary_warnings WHERE recipe_id = recipe_id;
+DELETE FROM made_of WHERE ingredient_id = ingredient_id AND recipe_id = recipe_id;
+DELETE FROM creates WHERE recipe_id = recipe_id AND username = 'username';
+DELETE FROM reviews WHERE review_id = review_id;
+DELETE FROM rating WHERE review_id = review_id;
 
-INSERT INTO made_of (ingredient_id, recipe_id) VALUES (ingredient_id, recipe_id);
 
 SELECT * FROM food WHERE name = 'FoodName';
 
@@ -280,10 +284,24 @@ INNER JOIN rating ra ON r.review_id = ra.review_id
 WHERE r.recipe_id = recipe_id;
 
 
+-- deleting a recipe
+
+DELETE r, m, c, rv, ra
+FROM recipe r
+LEFT JOIN made_of m ON r.recipe_id = m.recipe_id
+LEFT JOIN creates c ON r.recipe_id = c.recipe_id
+LEFT JOIN reviews rv ON r.recipe_id = rv.recipe_id
+LEFT JOIN rating ra ON rv.review_id = ra.review_id
+WHERE r.title = 'RecipeTitle';
+
+-- updating a recipes name
+UPDATE recipe
+SET title = 'NewRecipeTitle'
+WHERE recipe_id = recipe_id;
 
 
-
-
+UPDATE dietary_warnings SET spice_level = 4 WHERE recipe_id = recipe_id;
+UPDATE ingredients SET name = 'NewName' WHERE ingredient_id = id;
 
 
 
