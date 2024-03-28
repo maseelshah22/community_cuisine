@@ -14,19 +14,23 @@ def get_db():
         cursorclass=pymysql.cursors.DictCursor
     )
 
-def register_user(username, email, password):
+def register_user(username, email, password, first_name, last_name):
     connection = get_db()
     try:
         with connection.cursor() as cursor:
             cursor.execute("SELECT * FROM users WHERE username = %s OR email = %s", (username, email))
             if cursor.fetchone() is not None:
                 return False
-            
-            cursor.execute("INSERT INTO users (username, email, password) VALUES (%s, %s, %s)", (username, email, password))
+
+            cursor.execute("INSERT INTO users (username, email, password) VALUES (%s, %s, %s)", 
+                           (username, email, password))
+            cursor.execute("INSERT INTO person_name (username, first, last) VALUES (%s, %s, %s)", 
+                           (username, first_name.capitalize(), last_name.capitalize()))
             connection.commit()
     finally:
         connection.close()
     return True
+
 
 def login_user(username, password):
     connection = get_db()
@@ -55,7 +59,8 @@ def login():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        if register_user(form.username.data, form.email.data, form.password.data):
+        if register_user(form.username.data, form.email.data, form.password.data, 
+                         form.first_name.data, form.last_name.data):
             flash('Account created successfully! Please log in.')
             return redirect(url_for('login'))
         else:
