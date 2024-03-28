@@ -18,9 +18,14 @@ def register_user(username, email, password, first_name, last_name):
     connection = get_db()
     try:
         with connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM users WHERE username = %s OR email = %s", (username, email))
+            # Check for existing user
+            cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
             if cursor.fetchone() is not None:
-                return False
+                return "Username already exists"
+            
+            cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
+            if cursor.fetchone() is not None:
+                return "Email already exists"
 
             cursor.execute("INSERT INTO users (username, email, password) VALUES (%s, %s, %s)", 
                            (username, email, password))
@@ -29,7 +34,7 @@ def register_user(username, email, password, first_name, last_name):
             connection.commit()
     finally:
         connection.close()
-    return True
+    return "User registered successfully"
 
 
 def login_user(username, password):
@@ -59,12 +64,12 @@ def login():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        if register_user(form.username.data, form.email.data, form.password.data, 
-                         form.first_name.data, form.last_name.data):
+        result = register_user(form.username.data, form.email.data, form.password.data, form.first_name.data, form.last_name.data)
+        if result == "User registered successfully":
             flash('Account created successfully! Please log in.')
             return redirect(url_for('login'))
         else:
-            flash('Username or email already exists.')
+            flash(result) 
     return render_template('register.html', title='Register', form=form)
 
 @app.route('/')
