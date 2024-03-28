@@ -20,7 +20,7 @@
     <div class="container mt-5 form-container">
         <h2>{{ title }}</h2>
         <form method="post" class="mt-3">
-            {{ form.hidden_tag() }}
+            {{ form.csrf_token }}
             {% for field in form if field.name != 'submit' %}
                 <div class="mb-3">
                     {{ field.label(class_="form-label") }}
