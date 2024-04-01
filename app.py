@@ -49,6 +49,10 @@ def login_user(username, password):
     finally:
         connection.close()
 
+@app.route('/home')
+def home_page():
+    return render_template('home.html', title='HomePage')
+
 def hash_password(password):
     salt = "5wf5t9GUcqlSQxMe"
     salted_password = password + salt
@@ -63,7 +67,7 @@ def login():
     if form.validate_on_submit():
         if login_user(form.username.data, form.password.data):
             flash('Logged in successfully!')
-            return redirect(url_for('index'))
+            return redirect(url_for('home_page')) #THING I CHANGED FOR LOG IN REDIRECT
         else:
             flash('Invalid username or password.')
     return render_template('login.html', title='Login', form=form)
@@ -82,7 +86,7 @@ def register():
 
 @app.route('/')
 def index():
-    return '''Welcome to Community Cuisine! Please <a href="/login">login</a> or <a href="/register">register</a>.'''
+    return '''Welcome to Community Cuisine! Please <a href="/login">login</a> or <a href="/register">register</a>'''
 
 
 if __name__ == '__main__':
