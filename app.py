@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import pymysql.cursors
+import hashlib
 from forms import LoginForm, RegistrationForm
 
 app = Flask(__name__)
@@ -18,7 +19,6 @@ def register_user(username, email, password, first_name, last_name):
     connection = get_db()
     try:
         with connection.cursor() as cursor:
-            # Check for existing user
             cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
             if cursor.fetchone() is not None:
                 return "Username already exists"
@@ -28,7 +28,7 @@ def register_user(username, email, password, first_name, last_name):
                 return "Email already exists"
 
             cursor.execute("INSERT INTO users (username, email, password) VALUES (%s, %s, %s)", 
-                           (username, email, password))
+                           (username, email, hash_password(password)))
             cursor.execute("INSERT INTO person_name (username, first, last) VALUES (%s, %s, %s)", 
                            (username, first_name.capitalize(), last_name.capitalize()))
             connection.commit()
@@ -43,11 +43,19 @@ def login_user(username, password):
         with connection.cursor() as cursor:
             cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
             user = cursor.fetchone()
-            if user and user['password'] == password:
+            if user and user['password'] == hash_password(password):
                 return True
             return False
     finally:
         connection.close()
+
+def hash_password(password):
+    salt = "5wf5t9GUcqlSQxMe"
+    salted_password = password + salt
+    hash_object = hashlib.sha256(salted_password.encode())
+    hashed_password = hash_object.hexdigest()
+    return hashed_password
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
