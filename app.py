@@ -86,7 +86,7 @@ def register():
 
 @app.route('/')
 def index():
-    return '''Welcome to Community Cuisine! Please <a href="/login">login</a> or <a href="/register">register</a>'''
+    return render_template('index.html', title='Index')
 
 
 if __name__ == '__main__':

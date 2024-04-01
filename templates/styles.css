@@ -1,10 +1,21 @@
-body {
-    background-color: #f8f9fa;
+.body{
+   background-color: bisque;
 }
 .form-container {
-    max-width: 500px;
+    max-width: 200px;
     margin: auto;
+    justify-content: center;
 }
 .invalid-feedback {
     display: block;
+}
+
+.login{
+    text-align: center;
+    justify-content: center;
+    
+    
+}
+body, html {
+    background-color: bisque;
 }
