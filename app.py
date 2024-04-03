@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import pymysql.cursors
 import hashlib
 from forms import LoginForm, RegistrationForm
@@ -44,6 +44,7 @@ def login_user(username, password):
             cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
             user = cursor.fetchone()
             if user and user['password'] == hash_password(password):
+                session['username'] = username
                 return True
             return False
     finally:
@@ -67,6 +68,7 @@ def login():
     if form.validate_on_submit():
         if login_user(form.username.data, form.password.data):
             flash('Logged in successfully!')
+            print(session['username'])
             return redirect(url_for('home_page')) #THING I CHANGED FOR LOG IN REDIRECT
         else:
             flash('Invalid username or password.')
