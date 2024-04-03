@@ -52,7 +52,16 @@ def login_user(username, password):
 
 @app.route('/home')
 def home_page():
+    if 'username' in session:
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute('SELECT first, last FROM person_name WHERE username = %s', (session['username'],))
+        user = cursor.fetchone()
+        if user:
+            first_name, last_name = user['first'], user['last']
+            return render_template('home.html', title='HomePage', first_name=first_name, last_name=last_name)
     return render_template('home.html', title='HomePage')
+
 
 def hash_password(password):
     salt = "5wf5t9GUcqlSQxMe"
@@ -68,7 +77,6 @@ def login():
     if form.validate_on_submit():
         if login_user(form.username.data, form.password.data):
             flash('Logged in successfully!')
-            print(session['username'])
             return redirect(url_for('home_page')) #THING I CHANGED FOR LOG IN REDIRECT
         else:
             flash('Invalid username or password.')
