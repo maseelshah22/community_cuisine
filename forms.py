@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 WTF_CSRF_CHECK_DEFAUL = False
@@ -17,6 +17,11 @@ class RegistrationForm(FlaskForm):
     first_name = StringField('First Name', validators=[DataRequired(), Length(max=50)])
     last_name = StringField('Last Name', validators=[DataRequired(), Length(max=50)])
     submit = SubmitField('Register')
+
+class RecipeForm(FlaskForm):
+    title = StringField('Recipe Title', validators=[DataRequired(), Length(min=3, max=255)])
+    ingredients = TextAreaField('Ingredients', validators=[DataRequired()])
+    submit = SubmitField('Submit Recipe')
 
 
 

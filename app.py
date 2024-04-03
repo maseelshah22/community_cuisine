@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import pymysql.cursors
 import hashlib
-from forms import LoginForm, RegistrationForm
+from forms import LoginForm, RegistrationForm, RecipeForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'bomboclaat_lebron_james_you_are_my_sunshine'
@@ -89,6 +89,24 @@ def search():
 
     return render_template('home.html', recipes=recipes, first_name=first_name, last_name=last_name)
 
+
+@app.route('/recipe/<int:recipe_id>')
+def show_ingredients(recipe_id):
+    db = get_db() 
+    cursor = db.cursor() 
+
+    cursor.execute('SELECT title FROM recipe WHERE recipe_id = %s', (recipe_id,))
+    recipe = cursor.fetchone() 
+    
+
+    cursor.execute('''
+        SELECT name FROM ingredients 
+        JOIN made_of ON ingredients.ingredient_id = made_of.ingredient_id
+        WHERE made_of.recipe_id = %s
+    ''', (recipe_id,))
+    ingredients = cursor.fetchall()
+
+    return render_template('ingredients.html', recipe=recipe, ingredients=ingredients)
 
 
 def hash_password(password):
