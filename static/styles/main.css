@@ -1,4 +1,4 @@
-.body{
+body{
    background-color: bisque;
 }
 .form-container {
@@ -13,9 +13,11 @@
 .login{
     text-align: center;
     justify-content: center;
-    
+    background-color: blue;
     
 }
-body, html {
-    background-color: bisque;
+
+h1{
+    text-align: center;
+    justify-content: center;
 }
