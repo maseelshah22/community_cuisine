@@ -62,6 +62,34 @@ def home_page():
             return render_template('home.html', title='HomePage', first_name=first_name, last_name=last_name)
     return render_template('home.html', title='HomePage')
 
+@app.route('/search', methods=['POST'])
+def search():
+    search_term = request.form['search_term']
+    db = get_db()
+    cursor = db.cursor()
+
+    if 'username' in session:
+        cursor.execute('SELECT first, last FROM person_name WHERE username = %s', (session['username'],))
+        user = cursor.fetchone()
+        if user:
+            first_name, last_name = user['first'], user['last']
+        else:
+            first_name, last_name = None, None
+    else:
+        first_name, last_name = None, None
+
+    cursor.execute('SELECT * FROM food WHERE name LIKE %s', ('%' + search_term + '%',))
+    food_items = cursor.fetchall()
+
+    recipes = []
+    for food in food_items:
+        cursor.execute('SELECT * FROM recipe WHERE food_id = %s', (food['food_id'],))
+        recipe_info = cursor.fetchall()
+        recipes.extend(recipe_info)
+
+    return render_template('home.html', recipes=recipes, first_name=first_name, last_name=last_name)
+
+
 
 def hash_password(password):
     salt = "5wf5t9GUcqlSQxMe"

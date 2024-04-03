@@ -18,3 +18,5 @@ class RegistrationForm(FlaskForm):
     last_name = StringField('Last Name', validators=[DataRequired(), Length(max=50)])
     submit = SubmitField('Register')
 
+
+
