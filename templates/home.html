@@ -9,8 +9,29 @@
         <link href="static/styles/main.css" rel="stylesheet" type="text/css" >
     </head>  
     <body>
+        <div>
         <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
-            <a class="nav-link active btn btn-primary" href="#">Home</a>
+            <a class="navbar-brand nav-link btn btn-primary" href="#">Home</a>
+            <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button> -->
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav">
+                {% if first_name and last_name %}
+                <span class="navbar-text text-white">
+                    Welcome, {{ first_name }} {{ last_name }}!
+                </span>
+                <a class="nav-link btn btn-danger" href="/logout">Logout</a>
+                {% else %}
+                <a class="nav-link btn btn-success" href="/login">Login</a>
+                {% endif %}
+              </div>
+            </div>
+          </nav>
+        </div>
+        
+        <!-- <nav class="navbar navbar-expand-lg navbar-light bg-secondary"> -->
+            <!-- <a class="nav-link active btn btn-primary" href="#">Home</a>
             <div class="ms-auto">
                 {% if first_name and last_name %}
                 <span class="navbar-text text-white">
@@ -20,8 +41,8 @@
                 {% else %}
                 <a class="nav-link btn btn-success" href="/login">Login</a>
                 {% endif %}
-            </div>
-        </nav>
+            </div> -->
+        <!-- </nav> -->
 
         <form action="/search" method="post">
             <input type="text" name="search_term" placeholder="Search for food...">

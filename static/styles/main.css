@@ -62,5 +62,14 @@ h1{
 }
 
 .index_page button:hover {
-    background-color: #0056b3; /* Button background color on hover */
+    background-color: #0056b3; 
+}
+
+.login_bar{
+    text-decoration: none;
+    color: black;
+}
+
+.navbar{
+    padding-left: 1rem;
 }
