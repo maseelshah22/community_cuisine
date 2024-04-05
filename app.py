@@ -112,8 +112,14 @@ def show_ingredients(recipe_id):
         WHERE recipe_id = %s
     ''', (recipe_id,))
     ratings = cursor.fetchall()
+
+    cursor.execute('''
+        SELECT spice_level, restrictions FROM dietary_warnings 
+        WHERE recipe_id = %s
+    ''', (recipe_id,))
+    restrictions = cursor.fetchall()
     
-    return render_template('ingredients.html', recipe=recipe, ingredients=ingredients, ratings=ratings)
+    return render_template('ingredients.html', recipe=recipe, ingredients=ingredients, ratings=ratings, restrictions=restrictions)
 
 
 def hash_password(password):

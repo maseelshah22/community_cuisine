@@ -21,9 +21,16 @@
     <h1>Reviews for {{ recipe.title }}</h1>
     <ul>
         {% for rating in ratings %}
-        <li>{{ rating.username }}</li>
-        <li>{{ rating.star }}</li>
-        <li>{{ rating.comment }}</li>
+        <li>Username: {{ rating.username }}</li>
+        <li>Rating: {{ rating.star }}</li>
+        <li>Comment: {{ rating.comment }}</li>
+        {% endfor %}
+    </ul>
+    <h1>Dietary Information for {{ recipe.title }}</h1>
+    <ul>
+        {% for restriction in restrictions %}
+        <li> Spice Level: {{ restriction.spice_level }}</li>
+        <li> Dietary Information: {{ restriction.restrictions}}  </li>
         {% endfor %}
     </ul>
     <a href="{{ url_for('home_page') }}">Back to Home</a>
