@@ -12,7 +12,7 @@
 <!-- style="background-color: bisque;" -->
 <!-- need to get rid of in line css and figure out why css isnt linking here -->
 <body style="background-color: bisque;">
-    <h1>Ingredients for {{ recipe.title }}</h1>
+    <h1>Ingredients for {{ recipe.title }} - Average Rating: {{ recipe.average_rating }}</h1>
     <ul>
         {% for ingredient in ingredients %}
         <li>{{ ingredient.name }}</li>
