@@ -112,7 +112,6 @@ def show_ingredients(recipe_id):
         WHERE recipe_id = %s
     ''', (recipe_id,))
     ratings = cursor.fetchall()
-    print(ratings)
     
     return render_template('ingredients.html', recipe=recipe, ingredients=ingredients, ratings=ratings)
 
