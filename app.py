@@ -104,9 +104,17 @@ def show_ingredients(recipe_id):
         JOIN made_of ON ingredients.ingredient_id = made_of.ingredient_id
         WHERE made_of.recipe_id = %s
     ''', (recipe_id,))
+
     ingredients = cursor.fetchall()
 
-    return render_template('ingredients.html', recipe=recipe, ingredients=ingredients)
+    cursor.execute('''
+        SELECT username, star, comment FROM rating 
+        WHERE recipe_id = %s
+    ''', (recipe_id,))
+    ratings = cursor.fetchall()
+    print(ratings)
+    
+    return render_template('ingredients.html', recipe=recipe, ingredients=ingredients, ratings=ratings)
 
 
 def hash_password(password):
