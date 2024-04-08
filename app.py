@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import pymysql.cursors
 import hashlib
-from forms import LoginForm, RegistrationForm, RecipeForm
+from forms import LoginForm, RegistrationForm, RecipeForm, UpdateAccountForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'bomboclaat_lebron_james_you_are_my_sunshine'
@@ -121,6 +121,41 @@ def show_ingredients(recipe_id):
     
     return render_template('ingredients.html', recipe=recipe, ingredients=ingredients, ratings=ratings, restrictions=restrictions)
 
+@app.route('/update_account', methods=['GET', 'POST'])
+def update_account():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+        
+    form = UpdateAccountForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        username = form.username.data
+        email = form.email.data
+        password = hash_password(form.password.data)
+
+        try:
+            connection = get_db()
+            with connection.cursor() as cursor:
+                sql = "UPDATE users SET email = %s, password = %s WHERE username = %s"
+                cursor.execute(sql, (email, password, username))
+            connection.commit()
+        finally:
+            connection.close()
+
+        flash('Your account has been updated!', 'success')
+        return redirect(url_for('home_page')) 
+    elif request.method == 'GET':
+        try:
+            connection = get_db()
+            with connection.cursor() as cursor:
+                sql = "SELECT username, email FROM users WHERE username = %s"
+                cursor.execute(sql, (session['username'],))
+                result = cursor.fetchone()
+                form.username.data = result['username']
+                form.email.data = result['email']
+        finally:
+            connection.close()
+
+    return render_template('update_account.html', title='Update Account', form=form)
 
 def hash_password(password):
     salt = "5wf5t9GUcqlSQxMe"
