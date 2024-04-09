@@ -254,7 +254,19 @@ def logout():
 
 @app.route('/')
 def index():
-    return render_template('index.html', title='Index')
+    db = get_db()
+    cursor = db.cursor()
+
+    if 'username' in session:
+        cursor.execute('SELECT first, last FROM person_name WHERE username = %s', (session['username'],))
+        user = cursor.fetchone()
+        if user:
+            first_name, last_name = user['first'], user['last']
+        else:
+            first_name, last_name = None, None
+    else:
+        first_name, last_name = None, None
+    return render_template('index.html', title='Index',first_name=first_name, last_name=last_name)
 
 
 if __name__ == '__main__':
