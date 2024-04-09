@@ -220,7 +220,7 @@ def add_recipe():
                     cursor.execute("SELECT ingredient_id FROM ingredients WHERE name = %s", (ingredient_name,))
                     ingredient = cursor.fetchone()
                     if ingredient is None:
-                        cursor.execute("INSERT INTO ingredients (name) VALUES (%s)", (ingredient_name,))
+                        cursor.execute("INSERT INTO ingredients (name) VALUES (%s)", (ingredient_name.lower(),))
                         ingredient_id = cursor.lastrowid
                     else:
                         ingredient_id = ingredient['ingredient_id']
