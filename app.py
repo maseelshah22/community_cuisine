@@ -217,7 +217,7 @@ def add_recipe():
                 cursor.execute("INSERT INTO dietary_warnings (recipe_id, spice_level, restrictions) VALUES (%s, %s, %s)", (recipe_id, spice_level, restrictions))
 
                 for ingredient_name in ingredients_list:
-                    cursor.execute("SELECT ingredient_id FROM ingredients WHERE name = %s", (ingredient_name,))
+                    cursor.execute("SELECT ingredient_id FROM ingredients WHERE LOWER(name) LIKE LOWER(%s)", ('%' + ingredient_name + '%',))
                     ingredient = cursor.fetchone()
                     if ingredient is None:
                         cursor.execute("INSERT INTO ingredients (name) VALUES (%s)", (ingredient_name.lower(),))
