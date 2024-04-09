@@ -73,3 +73,7 @@ h1{
 .navbar{
     padding-left: 1rem;
 }
+
+.nav-link {
+    margin-right: 3rem; 
+}

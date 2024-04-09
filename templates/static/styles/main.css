@@ -24,3 +24,6 @@ body{
      text-align: center;
      justify-content: center;
  }
+ .nav-item {
+    margin-right: 10px; 
+}
