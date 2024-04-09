@@ -50,8 +50,8 @@ def login_user(username, password):
     finally:
         connection.close()
 
-@app.route('/home')
-def home_page():
+@app.route('/find')
+def find_page():
     if 'username' in session:
         db = get_db()
         cursor = db.cursor()
@@ -59,8 +59,8 @@ def home_page():
         user = cursor.fetchone()
         if user:
             first_name, last_name = user['first'], user['last']
-            return render_template('home.html', title='HomePage', first_name=first_name, last_name=last_name)
-    return render_template('home.html', title='HomePage')
+            return render_template('find.html', title='FindPage', first_name=first_name, last_name=last_name)
+    return render_template('find.html', title='FindPage')
 
 @app.route('/search', methods=['POST'])
 def search():
@@ -87,7 +87,7 @@ def search():
         recipe_info = cursor.fetchall()
         recipes.extend(recipe_info)
 
-    return render_template('home.html', recipes=recipes, first_name=first_name, last_name=last_name)
+    return render_template('find.html', recipes=recipes, first_name=first_name, last_name=last_name)
 
 
 @app.route('/recipe/<int:recipe_id>')
@@ -142,7 +142,7 @@ def update_account():
             connection.close()
 
         flash('Your account has been updated!', 'success')
-        return redirect(url_for('home_page')) 
+        return redirect(url_for('find_page')) 
     elif request.method == 'GET':
         try:
             connection = get_db()
@@ -171,7 +171,7 @@ def login():
     if form.validate_on_submit():
         if login_user(form.username.data, form.password.data):
             flash('Logged in successfully!')
-            return redirect(url_for('home_page')) #THING I CHANGED FOR LOG IN REDIRECT
+            return redirect(url_for('find_page')) #THING I CHANGED FOR LOG IN REDIRECT
         else:
             flash('Invalid username or password.')
     return render_template('login.html', title='Login', form=form)
@@ -239,7 +239,7 @@ def add_recipe():
         finally:
             connection.close()
 
-        return redirect(url_for('home_page'))
+        return redirect(url_for('find_page'))
     return render_template('add_recipe.html', title='Add New Recipe', form=form)
 
 
