@@ -188,6 +188,63 @@ def register():
             flash(result) 
     return render_template('register.html', title='Register', form=form)
 
+@app.route('/add_recipe', methods=['GET', 'POST'])
+def add_recipe():
+    form = RecipeForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        ethnic_origin = form.ethnic_origin.data
+        meal_course = form.meal_course.data
+        title = form.title.data
+        spice_level = form.spice_level.data
+        restrictions = form.restrictions.data
+        ingredients_list = [i.strip() for i in form.ingredients.data.split(',')]
+
+        connection = get_db()
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT food_id FROM food WHERE name = %s", (name,))
+                food = cursor.fetchone()
+                if food is None:
+                    cursor.execute("INSERT INTO food (name, ethnic_origin, meal_course) VALUES (%s, %s, %s)", (name, ethnic_origin, meal_course))
+                    food_id = connection.insert_id()
+                else:
+                    food_id = food['food_id']
+                
+                cursor.execute("INSERT INTO recipe (title, food_id) VALUES (%s, %s)", (title, food_id))
+                recipe_id = cursor.lastrowid
+
+                cursor.execute("INSERT INTO dietary_warnings (recipe_id, spice_level, restrictions) VALUES (%s, %s, %s)", (recipe_id, spice_level, restrictions))
+
+                for ingredient_name in ingredients_list:
+                    cursor.execute("SELECT ingredient_id FROM ingredients WHERE name = %s", (ingredient_name,))
+                    ingredient = cursor.fetchone()
+                    if ingredient is None:
+                        cursor.execute("INSERT INTO ingredients (name) VALUES (%s)", (ingredient_name,))
+                        ingredient_id = cursor.lastrowid
+                    else:
+                        ingredient_id = ingredient['ingredient_id']
+
+                    cursor.execute("INSERT INTO made_of (ingredient_id, recipe_id) VALUES (%s, %s)", (ingredient_id, recipe_id))
+
+                
+                username = session['username'] 
+                cursor.execute("INSERT INTO creates (recipe_id, username) VALUES (%s, %s)", (recipe_id, username))
+
+                connection.commit()
+                
+                flash('Recipe added successfully!', 'success')
+        except Exception as e:
+            flash(f'An error occurred: {e}', 'danger')
+        finally:
+            connection.close()
+
+        return redirect(url_for('home_page'))
+    return render_template('add_recipe.html', title='Add New Recipe', form=form)
+
+
+
+
 @app.route('/logout')
 def logout():
     session.clear()

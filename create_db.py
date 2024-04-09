@@ -91,7 +91,6 @@ def create_tables():
                 )
             ''')
 
-            # I removed quantity, it just complicated things
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS made_of (
                     ingredient_id INT NOT NULL,

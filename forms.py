@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired, Email, EqualTo, Length
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, SelectField, IntegerField
+from wtforms.validators import DataRequired, Email, EqualTo, Length, Optional
 
 WTF_CSRF_CHECK_DEFAUL = False
 
@@ -29,6 +29,16 @@ class UpdateAccountForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Update')
+
+class RecipeForm(FlaskForm):
+    name = StringField('Food Name', validators=[DataRequired()])
+    ethnic_origin = StringField('Ethnic Origin', validators=[DataRequired()])
+    meal_course = SelectField('Meal Course', choices=[('Breakfast', 'Breakfast'), ('Lunch', 'Lunch'), ('Dinner', 'Dinner'), ('Dessert', 'Dessert')], validators=[DataRequired()])
+    title = StringField('Recipe Title', validators=[DataRequired()])
+    spice_level = IntegerField('Spice Level (1-5)', validators=[DataRequired()])
+    restrictions = StringField('Dietary Restrictions', validators=[Optional()])
+    ingredients = StringField('Ingredients (comma-separated)', validators=[DataRequired()])
+    submit = SubmitField('Add Recipe')
 
 
 

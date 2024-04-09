@@ -23,6 +23,7 @@
                 </span>
                 <a class="nav-link btn btn-danger" href="/logout">Logout</a>
                 <a class="nav-link btn btn-info" href="/update_account">Update Account</a>
+                <a class="btn btn-success my-2" href="{{ url_for('add_recipe') }}">Add New Recipe</a>
                 {% else %}
                 <a class="nav-link btn btn-success" href="/login">Login</a>
                 {% endif %}
