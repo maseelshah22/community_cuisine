@@ -203,7 +203,7 @@ def add_recipe():
         connection = get_db()
         try:
             with connection.cursor() as cursor:
-                cursor.execute("SELECT food_id FROM food WHERE name = %s", (name,))
+                cursor.execute("SELECT food_id FROM food WHERE LOWER(name) LIKE LOWER(%s)", ('%' + name + '%',))
                 food = cursor.fetchone()
                 if food is None:
                     cursor.execute("INSERT INTO food (name, ethnic_origin, meal_course) VALUES (%s, %s, %s)", (name, ethnic_origin, meal_course))
