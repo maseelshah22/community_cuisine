@@ -72,8 +72,19 @@ h1{
 
 .navbar{
     padding-left: 1rem;
+    color:white;
 }
 
 .nav-link {
     margin-right: 3rem; 
+    color: white;
+}
+
+.btn{
+    margin-right: 1rem; 
+    color:white;
+}
+
+.ms-auto{
+    margin-right: 1rem;
 }
