@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import pymysql.cursors
 import hashlib
-from forms import LoginForm, RegistrationForm, RecipeForm, UpdateAccountForm
+from forms import LoginForm, RegistrationForm, RecipeForm, UpdateAccountForm, RatingForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'bomboclaat_lebron_james_you_are_my_sunshine'
@@ -95,7 +95,7 @@ def show_ingredients(recipe_id):
     db = get_db() 
     cursor = db.cursor() 
 
-    cursor.execute('SELECT title, average_rating FROM recipe WHERE recipe_id = %s', (recipe_id,))
+    cursor.execute('SELECT recipe_id, title, average_rating FROM recipe WHERE recipe_id = %s', (recipe_id,))
     recipe = cursor.fetchone() 
     
 
@@ -243,7 +243,28 @@ def add_recipe():
     return render_template('add_recipe.html', title='Add New Recipe', form=form)
 
 
-
+@app.route('/add_rating/<int:recipe_id>', methods=['GET', 'POST'])
+def add_rating(recipe_id):
+    print(recipe_id)
+    form = RatingForm()
+    if form.validate_on_submit():
+        star = form.star.data
+        comment = form.comment.data
+        username = session['username']
+        
+        connection = get_db()
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("INSERT INTO reviews (recipe_id, username) VALUES (%s, %s)", (recipe_id, username))
+                review_id = cursor.lastrowid
+                
+                cursor.execute("INSERT INTO rating (review_id, recipe_id, username, star, comment) VALUES (%s, %s, %s, %s, %s)", (review_id, recipe_id, username, star, comment))
+                connection.commit()
+                flash('Rating added successfully!', 'success')
+        finally:
+            connection.close()
+        return redirect(url_for('show_ingredients', recipe_id=recipe_id))
+    return render_template('add_rating.html', title='Add Rating', form=form, recipe_id=recipe_id)
 
 @app.route('/logout')
 def logout():

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField, SelectField, IntegerField
-from wtforms.validators import DataRequired, Email, EqualTo, Length, Optional
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, SelectField, IntegerField, HiddenField
+from wtforms.validators import DataRequired, Email, EqualTo, Length, Optional, NumberRange
 
 WTF_CSRF_CHECK_DEFAUL = False
 
@@ -39,6 +39,12 @@ class RecipeForm(FlaskForm):
     restrictions = StringField('Dietary Restrictions', validators=[Optional()])
     ingredients = StringField('Ingredients (comma-separated)', validators=[DataRequired()])
     submit = SubmitField('Add Recipe')
+
+class RatingForm(FlaskForm):
+    recipe_id = HiddenField('Recipe ID')
+    star = IntegerField('Rating (1-5)', validators=[DataRequired(), NumberRange(min=1, max=5)])
+    comment = TextAreaField('Comment', validators=[DataRequired()])
+    submit = SubmitField('Submit Review')
 
 
 
