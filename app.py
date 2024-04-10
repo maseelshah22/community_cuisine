@@ -266,6 +266,48 @@ def add_rating(recipe_id):
         return redirect(url_for('show_ingredients', recipe_id=recipe_id))
     return render_template('add_rating.html', title='Add Rating', form=form, recipe_id=recipe_id)
 
+@app.route('/user_reviews')
+def user_reviews():
+    if 'username' not in session:
+        flash('Please log in to view your reviews.', 'warning')
+        return redirect(url_for('login'))
+
+    username = session['username']
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute('''
+        SELECT review_id, title, star, comment 
+        FROM rating 
+        JOIN recipe ON rating.recipe_id = recipe.recipe_id
+        WHERE username = %s
+    ''', (username,))
+    reviews = cursor.fetchall()
+
+    return render_template('user_reviews.html', reviews=reviews)
+
+@app.route('/delete_review/<int:review_id>')
+def delete_review(review_id):
+    if 'username' not in session:
+        flash('Please log in to continue.', 'warning')
+        return redirect(url_for('login'))
+
+    username = session['username']
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute('SELECT * FROM rating WHERE review_id = %s AND username = %s', (review_id, username))
+    review = cursor.fetchone()
+
+    if review:
+        cursor.execute('DELETE FROM rating WHERE review_id = %s', (review_id,))
+        db.commit()
+        flash('Review deleted successfully.', 'success')
+    else:
+        flash('Unauthorized deletion attempt.', 'danger')
+
+    return redirect(url_for('user_reviews'))
+
 @app.route('/logout')
 def logout():
     session.clear()
