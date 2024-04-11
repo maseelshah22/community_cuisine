@@ -95,7 +95,7 @@ def show_ingredients(recipe_id):
     db = get_db() 
     cursor = db.cursor() 
 
-    cursor.execute('SELECT recipe_id, title, average_rating FROM recipe WHERE recipe_id = %s', (recipe_id,))
+    cursor.execute('SELECT recipe_id, title, average_rating, URL FROM recipe WHERE recipe_id = %s', (recipe_id,))
     recipe = cursor.fetchone() 
     
 

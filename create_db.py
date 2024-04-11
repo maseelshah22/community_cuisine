@@ -59,6 +59,10 @@ def create_tables():
                     FOREIGN KEY (food_id) REFERENCES food(food_id)
                 )
             ''')
+            cursor.execute('''
+                ALTER TABLE recipe
+                ADD COLUMN URL VARCHAR(255) NOT NULL;
+            ''')
 
             cursor.execute('''
                 ALTER TABLE recipe 
