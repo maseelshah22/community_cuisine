@@ -17,7 +17,7 @@
            
                 {% if first_name and last_name %}
                 
-                <a class="btn" href="#">Find a Recipe</a>
+                <a class="btn" href="/find">Find a Recipe</a>
                 <a class="btn"  href="{{ url_for('add_recipe') }}">Add New Recipe</a>
                 <a class="btn" href="{{ url_for('user_reviews') }}">My Reviews</a>
                 <span class="navbar-brand navbar-text text-white ms-auto">
@@ -30,8 +30,6 @@
                 <a class="nav-link btn btn-success" href="/login">Login</a>
 
                 {% endif %}
-              <!-- </div> -->
-            <!-- </div> -->
            
           </nav>
         </div>

@@ -282,13 +282,26 @@ def add_rating(recipe_id):
 
 @app.route('/user_reviews')
 def user_reviews():
+    
     if 'username' not in session:
         flash('Please log in to view your reviews.', 'warning')
         return redirect(url_for('login'))
+    
+    
 
     username = session['username']
     db = get_db()
     cursor = db.cursor()
+
+    if 'username' in session:
+        cursor.execute('SELECT first, last FROM person_name WHERE username = %s', (session['username'],))
+        user = cursor.fetchone()
+        if user:
+            first_name, last_name = user['first'], user['last']
+        else:
+            first_name, last_name = None, None
+    else:
+        first_name, last_name = None, None
 
     cursor.execute('''
         SELECT review_id, title, star, comment 
@@ -298,7 +311,7 @@ def user_reviews():
     ''', (username,))
     reviews = cursor.fetchall()
 
-    return render_template('user_reviews.html', reviews=reviews)
+    return render_template('user_reviews.html', reviews=reviews,first_name=first_name, last_name=last_name)
 
 @app.route('/delete_review/<int:review_id>')
 def delete_review(review_id):
