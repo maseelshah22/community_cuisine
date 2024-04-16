@@ -113,6 +113,36 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #f0f0f0;
+    border: 2px solid #ccc; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    padding: 20px; 
+    max-width: 720px; 
+    margin: auto; 
+    /* margin-top: 5%;  */
+    }
+
+    .containerTitle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #f0f0f0;
+    border: 2px solid #ccc; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    padding: 20px; 
+    max-width: 720px; 
+    margin: auto; 
+    margin-top: 5%; 
     }
 
     .ingItems {
@@ -148,10 +178,13 @@
         <!-- </div> -->
 
     </nav>
-
+   
+    <div class="containerTitle">   
     <h1>Ingredients for <a href="{{ recipe['URL'] }}" target="_blank">{{ recipe.title }}</a> - Average Rating: {{
         recipe.average_rating }}</h1>
-    <div class="container">
+    </div>
+
+        <div class="container">
         <div class="ingItems">
             <ul>
                 {% for ingredient in ingredients %}
