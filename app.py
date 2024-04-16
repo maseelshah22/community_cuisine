@@ -118,8 +118,22 @@ def show_ingredients(recipe_id):
         WHERE recipe_id = %s
     ''', (recipe_id,))
     restrictions = cursor.fetchall()
+
+
+    db = get_db()
+    cursor = db.cursor()
+
+    if 'username' in session:
+        cursor.execute('SELECT first, last FROM person_name WHERE username = %s', (session['username'],))
+        user = cursor.fetchone()
+        if user:
+            first_name, last_name = user['first'], user['last']
+        else:
+            first_name, last_name = None, None
+    else:
+        first_name, last_name = None, None
     
-    return render_template('ingredients.html', recipe=recipe, ingredients=ingredients, ratings=ratings, restrictions=restrictions)
+    return render_template('ingredients.html', recipe=recipe, ingredients=ingredients, ratings=ratings, restrictions=restrictions, first_name=first_name, last_name=last_name)
 
 @app.route('/update_account', methods=['GET', 'POST'])
 def update_account():
@@ -155,7 +169,20 @@ def update_account():
         finally:
             connection.close()
 
-    return render_template('update_account.html', title='Update Account', form=form)
+    db = get_db()
+    cursor = db.cursor()
+
+    if 'username' in session:
+        cursor.execute('SELECT first, last FROM person_name WHERE username = %s', (session['username'],))
+        user = cursor.fetchone()
+        if user:
+            first_name, last_name = user['first'], user['last']
+        else:
+            first_name, last_name = None, None
+    else:
+        first_name, last_name = None, None
+
+    return render_template('update_account.html', title='Update Account', form=form, first_name=first_name, last_name=last_name)
 
 def hash_password(password):
     salt = "5wf5t9GUcqlSQxMe"
