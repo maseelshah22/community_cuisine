@@ -114,17 +114,17 @@
         justify-content: center;
         align-items: center;
         display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background-color: #f0f0f0;
-    border: 2px solid #ccc; 
-    border-radius: 10px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-    padding: 20px; 
-    max-width: 720px; 
-    margin: auto; 
-    /* margin-top: 5%;  */
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background-color: #f0f0f0;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        max-width: 720px;
+        margin: auto;
+        /* margin-top: 5%;  */
     }
 
     .containerTitle {
@@ -132,22 +132,62 @@
         justify-content: center;
         align-items: center;
         display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background-color: #f0f0f0;
-    border: 2px solid #ccc; 
-    border-radius: 10px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-    padding: 20px; 
-    max-width: 720px; 
-    margin: auto; 
-    margin-top: 5%; 
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background-color: #f0f0f0;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        max-width: 720px;
+        margin: auto;
+        margin-top: 3%;
+    }
+
+    .buttonContainer {
+        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background-color: #f0f0f0;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+        padding: 20px;
+        max-width: 360px;
+        margin: auto;
+        margin-top: 3%;
+       
+    }
+
+    .reviewBox {
+
+        display: block;
+        justify-content: center;
+        align-items: center;
+        text-align: left;
+        background-color: #d5b5b5;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        max-width: 500px;
+        margin-bottom: 1rem;
+        /* margin: auto; */
+        /* margin-top: 3%; */
     }
 
     .ingItems {
         text-align: left;
     }
+
+    .ingItems h2 {
+        text-align: center;
+    }
+
+   
 </style>
 <!-- style="background-color: bisque;" -->
 <!-- need to get rid of in line css and figure out why css isnt linking here -->
@@ -178,49 +218,79 @@
         <!-- </div> -->
 
     </nav>
-   
-    <div class="containerTitle">   
-    <h1>Ingredients for <a href="{{ recipe['URL'] }}" target="_blank">{{ recipe.title }}</a> - Average Rating: {{
-        recipe.average_rating }}</h1>
+
+    <div class="containerTitle">
+        <h1>{{ recipe.title }} </h1>
     </div>
 
-        <div class="container">
+    <div class="containerTitle">
+        <h1>Ingredients for <a href="{{ recipe['URL'] }}" target="_blank">{{ recipe.title }}</a> </h1>
+    </div>
+
+    <div class="container">
         <div class="ingItems">
+            <div class="reviewBox">
+
             <ul>
                 {% for ingredient in ingredients %}
                 <li>{{ ingredient.name }}</li>
                 {% endfor %}
             </ul>
-        </div>
-    </div>
-    <h1>Reviews for {{ recipe.title }}</h1>
-    <div class="container">
-        <div class="ingItems">
-            <ul>
-                {% for rating in ratings %}
-                <li>Username: {{ rating.username }}</li>
-                <li>Rating: {{ rating.star }}</li>
-                <li>Comment: {{ rating.comment }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-    <h1>Dietary Information for {{ recipe.title }}</h1>
-    <div class="container">
-        <div class="ingItems">
-            <ul>
-                {% for restriction in restrictions %}
-                <li> Spice Level: {{ restriction.spice_level }}</li>
-                <li> Dietary Information: {{ restriction.restrictions}} </li>
-                {% endfor %}
-            </ul>
+            </div>
+
         </div>
     </div>
 
-    <div class="container" style="padding-top: 2rem;">
+    <div class="containerTitle">
+
+        <!-- for {{ recipe.title }} -->
+        <h1>Dietary Information </h1>
+    </div>
+
+    <div class="container">
+        <div class="ingItems">
+            <div class="reviewBox">
+                <ul>
+                    {% for restriction in restrictions %}
+                    <li> Spice Level: {{ restriction.spice_level }}</li>
+                    <li> Dietary Information: {{ restriction.restrictions}} </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="containerTitle">
+        <!-- for {{ recipe.title }} -->
+        <h1>Reviews</h1>
+      
+
+    </div>
+
+    <div class="container">
+        
+        <div class="ingItems">
+            
+            <ul>
+                <h4>Average Rating: {{recipe.average_rating }}</h4>
+                {% for rating in ratings %}
+                <div class="reviewBox">
+                    <li>Username: {{ rating.username }}</li>
+                    <li>Rating: {{ rating.star }}</li>
+                    <li>Comment: {{ rating.comment }}</li>
+                </div>
+                {% endfor %}
+            </ul>
+
+        </div>
+    </div>
+
+
+    <div class="buttonContainer" >
         <a class="btn btn-primary" href="{{ url_for('add_rating', recipe_id=recipe['recipe_id']) }}">Add Rating</a>
         <a class="btn btn-primary" href="{{ url_for('find_page') }}">Back to Search</a>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
