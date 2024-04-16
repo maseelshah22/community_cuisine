@@ -1,48 +1,130 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>User Reviews</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> 
-    <link href="static/styles/main.css" rel="stylesheet" type="text/css" >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="static/styles/main.css" rel="stylesheet" type="text/css">
 </head>
+
+<style>
+    body {
+        background-color: bisque;
+        display: block;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background-color: #f0f0f0;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        max-width: 720px;
+        margin: auto;
+        /* margin-top: 5%;  */
+        margin-bottom: 1rem;
+    }
+
+    .reviewBox {
+
+        display: block;
+        justify-content: center;
+        align-items: center;
+        text-align: left;
+        background-color: #d5b5b5;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        max-width: 500px;
+        margin-bottom: 1rem;
+        /* margin: auto; */
+        /* margin-top: 3%; */
+    }
+    .deleteRevButton{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin-top: 1rem;
+    
+    }
+
+    .revTitle{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+</style>
+
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
         <a class="navbar-brand btn" style="font-size: 26px;" href="/">Community Cuisine</a>
 
         <a class="btn" href="/">Home</a>
-       
-            {% if first_name and last_name %}
-            
-            <a class="btn" href="/find">Find a Recipe</a>
-            <a class="btn"  href="{{ url_for('add_recipe') }}">Add New Recipe</a>
-            <a class="btn" href="{{ url_for('user_reviews') }}">My Reviews</a>
-            <span class="navbar-brand navbar-text text-white ms-auto">
-                Welcome, {{ first_name }} {{ last_name }}!
-            </span>
-            <a class="btn " href="/update_account">Update Account</a>
 
-            <a class="btn btn-danger" href="/logout">Logout</a>
-            {% else %}
-            <a class="nav-link btn btn-success" href="/login">Login</a>
+        {% if first_name and last_name %}
 
-            {% endif %}
-          <!-- </div> -->
+        <a class="btn" href="/find">Find a Recipe</a>
+        <a class="btn" href="{{ url_for('add_recipe') }}">Add New Recipe</a>
+        <a class="btn" href="{{ url_for('user_reviews') }}">My Reviews</a>
+        <span class="navbar-brand navbar-text text-white ms-auto">
+            Welcome, {{ first_name }} {{ last_name }}!
+        </span>
+        <a class="btn " href="/update_account">Update Account</a>
+
+        <a class="btn btn-danger" href="/logout">Logout</a>
+        {% else %}
+        <a class="nav-link btn btn-success" href="/login">Login</a>
+
+        {% endif %}
         <!-- </div> -->
-       
-      </nav>
+        <!-- </div> -->
+
+    </nav>
     <h2>My Reviews</h2>
-    <ul>
-        {% for review in reviews %}
+
+    <div class="container">
+
+        <ul>
+            {% for review in reviews %}
+            <div class="reviewBox">
+            <div class="revTitle">
+               <h5>{{ review.title }} </h5> 
+            </div>
             <li>
-                {{ review.title }} - Rating: {{ review.star }} - Comment: {{ review.comment }}
-                <a href="{{ url_for('delete_review', review_id=review.review_id) }}" class="btn btn-danger">Delete</a>
+                Rating: {{ review.star }} 
             </li>
-        {% endfor %}
-    </ul>
-    <a href="{{ url_for('find_page') }}" class="btn btn-primary">Home</a>
+            <li>
+                Comment: {{ review.comment }}
+            </li>
+           
+            <div class="deleteRevButton">
+                <a href="{{ url_for('delete_review', review_id=review.review_id) }}" class="btn btn-danger">Delete</a>
+            </div>
+            
+        </div>
+            {% endfor %}
+        </ul>
+    </div>
+    <!-- <a href="/" class="btn btn-primary">Home</a>
+    <a href="{{ url_for('find_page') }}" class="btn btn-primary">Find Recipes</a> -->
 </body>
+
 </html>
