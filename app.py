@@ -240,7 +240,21 @@ def add_recipe():
             connection.close()
 
         return redirect(url_for('find_page'))
-    return render_template('add_recipe.html', title='Add New Recipe', form=form)
+    
+    db = get_db()
+    cursor = db.cursor()
+
+    if 'username' in session:
+        cursor.execute('SELECT first, last FROM person_name WHERE username = %s', (session['username'],))
+        user = cursor.fetchone()
+        if user:
+            first_name, last_name = user['first'], user['last']
+        else:
+            first_name, last_name = None, None
+    else:
+        first_name, last_name = None, None
+
+    return render_template('add_recipe.html', title='Add New Recipe', form=form, first_name=first_name, last_name=last_name)
 
 
 @app.route('/add_rating/<int:recipe_id>', methods=['GET', 'POST'])
