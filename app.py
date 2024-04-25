@@ -226,6 +226,7 @@ def add_recipe():
         spice_level = form.spice_level.data
         restrictions = form.restrictions.data
         ingredients_list = [i.strip() for i in form.ingredients.data.split(',')]
+        URL = form.URL.data
 
         connection = get_db()
         try:
@@ -237,8 +238,9 @@ def add_recipe():
                     food_id = connection.insert_id()
                 else:
                     food_id = food['food_id']
-                
-                cursor.execute("INSERT INTO recipe (title, food_id) VALUES (%s, %s)", (title, food_id))
+    
+                    
+                cursor.execute("INSERT INTO recipe (title, food_id, URL) VALUES (%s, %s, %s)", (title, food_id, URL))
                 recipe_id = cursor.lastrowid
 
                 cursor.execute("INSERT INTO dietary_warnings (recipe_id, spice_level, restrictions) VALUES (%s, %s, %s)", (recipe_id, spice_level, restrictions))
@@ -344,10 +346,11 @@ def user_reviews():
         first_name, last_name = None, None
 
     cursor.execute('''
-        SELECT review_id, title, star, comment 
-        FROM rating 
-        JOIN recipe ON rating.recipe_id = recipe.recipe_id
-        WHERE username = %s
+        SELECT DISTINCT rating.review_id, recipe.title, rating.star, rating.comment 
+        FROM reviews
+        INNER JOIN rating ON reviews.recipe_id = rating.recipe_id AND reviews.username = rating.username
+        INNER JOIN recipe ON rating.recipe_id = recipe.recipe_id
+        WHERE reviews.username = %s
     ''', (username,))
     reviews = cursor.fetchall()
 

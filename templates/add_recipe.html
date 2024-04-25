@@ -117,6 +117,16 @@
                     </div>
                 {% endif %}
             </div>
+            <div class="mb-3">
+                {{ form.URL.label(class="form-label") }}
+                {{ form.URL(class="form-control") }}
+                {% if form.URL.errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.URL.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             <div>
                 {{ form.submit(class="btn btn-primary") }}
             </div>

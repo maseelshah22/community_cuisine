@@ -38,6 +38,7 @@ class RecipeForm(FlaskForm):
     spice_level = IntegerField('Spice Level (1-5)', validators=[DataRequired()])
     restrictions = StringField('Dietary Restrictions', validators=[Optional()])
     ingredients = StringField('Ingredients (comma-separated)', validators=[DataRequired()])
+    URL = StringField('URL', validators=[DataRequired()])
     submit = SubmitField('Add Recipe')
 
 class RatingForm(FlaskForm):
