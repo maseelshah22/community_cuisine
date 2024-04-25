@@ -125,6 +125,9 @@ def show_ingredients(recipe_id):
         WHERE creates.recipe_id = %s
     ''', (recipe_id,))
 
+    creator_person = cursor.fetchone()
+    creator = creator_person['username']
+
 
     db = get_db()
     cursor = db.cursor()
@@ -139,7 +142,7 @@ def show_ingredients(recipe_id):
     else:
         first_name, last_name = None, None
     
-    return render_template('ingredients.html', recipe=recipe, ingredients=ingredients, ratings=ratings, restrictions=restrictions, first_name=first_name, last_name=last_name)
+    return render_template('ingredients.html', recipe=recipe, ingredients=ingredients, ratings=ratings, restrictions=restrictions, first_name=first_name, last_name=last_name, creator=creator)
 
 @app.route('/update_account', methods=['GET', 'POST'])
 def update_account():
