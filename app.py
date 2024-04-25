@@ -119,6 +119,12 @@ def show_ingredients(recipe_id):
     ''', (recipe_id,))
     restrictions = cursor.fetchall()
 
+    cursor.execute('''
+        SELECT users.username FROM creates
+        JOIN users ON creates.username = users.username
+        WHERE creates.recipe_id = %s
+    ''', (recipe_id,))
+
 
     db = get_db()
     cursor = db.cursor()
