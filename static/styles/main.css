@@ -32,7 +32,7 @@ h1{
 }
 
 .index_button{
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 
@@ -48,7 +48,11 @@ h1{
     padding: 20px; 
     max-width: 720px; 
     margin: auto; 
-    margin-top: 5%; 
+    /* margin-top: 3%;  */
+}
+
+.whoweare{
+    margin-top: 3%;
 }
 
 .index_page button {
@@ -66,13 +70,12 @@ h1{
     color:black;
 }
 
-.index_page button:hover {
-    background-color: #0056b3; 
-}
+/* .index_page button:hover {
+} */
 
 .login_bar{
     text-decoration: none;
-    color: black;
+    color: white;
 }
 
 .navbar{
