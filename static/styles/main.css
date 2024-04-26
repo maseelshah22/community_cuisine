@@ -135,11 +135,11 @@ h1 {
 }
 
 .foundRecipeBox {
-	background-color: #d5b5b5;
-    border: 2px solid #ccc;
+	/* background-color: #d5b5b5;
+    border: 2px solid #ccc; */
 
-	/* background-color: #f0f0f0;
-	border: 2px solid #ccc; */
+	background-color: #f0f0f0;
+	border: 2px solid #ccc; 
 
 	border-radius: 10px;
 
