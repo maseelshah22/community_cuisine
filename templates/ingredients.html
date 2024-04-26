@@ -144,6 +144,23 @@
         margin: auto;
         margin-top: 3%;
     }
+    .containerAuthor {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background-color: #f0f0f0;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        max-width: 15%;
+        margin: auto;
+        /* margin-top: 3%; */
+    }
 
     .buttonContainer {
         
@@ -221,8 +238,14 @@
 
     <div class="containerTitle">
         <h1>{{ recipe.title }} </h1>
-        <h2>Created by: {{ creator }}</h2>
+      
+       
     </div>
+
+    <div class="containerAuthor">
+        <h5>Created by: {{ creator }}</h5>
+  </div>
+   
 
     <div class="containerTitle">
         <h1>Ingredients for <a href="{{ recipe['URL'] }}" target="_blank">{{ recipe.title }}</a> </h1>
