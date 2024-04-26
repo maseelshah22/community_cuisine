@@ -120,6 +120,8 @@
             <div class="mb-3">
                 {{ form.URL.label(class="form-label") }}
                 {{ form.URL(class="form-control") }}
+                <small class="form-text text-muted">If no URL exists, type N/A</small>
+
                 {% if form.URL.errors %}
                     <div class="alert alert-danger">
                         {% for error in form.URL.errors %}

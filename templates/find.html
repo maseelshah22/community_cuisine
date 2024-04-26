@@ -65,7 +65,7 @@
             <button class="btn btn-outline-dark searchButton" style="color:black; " type="submit">Search</button>
         </form> -->
 
-        <form action="/search" method="post" class="searchForm">
+        <form action="/search" method="post" class="searchForm" >
             <input class="foodSearch" type="text" name="search_term" placeholder="Search for food...">
             <button class="btn btn-outline-dark searchButton" style="color:black;" type="submit" disabled>Search</button>
         </form>
@@ -74,9 +74,10 @@
        
     </div>
 
+    <div style="margin-bottom: 1rem;"></div>
     {% for recipe in recipes %}
-    <div class="recipe">
-        <h2><a href="{{ url_for('show_ingredients', recipe_id=recipe.recipe_id) }}">{{ recipe.title }}</a></h2>
+    <div class="foundRecipeBox">
+        <h2><button class="btn btn-dark" style="font-size: 1.45rem; text-decoration: none; "><a style="color:white;text-decoration: none;" href="{{ url_for('show_ingredients', recipe_id=recipe.recipe_id) }}">{{ recipe.title }}</a></button></h2>
     </div>
     {% endfor %}
 
