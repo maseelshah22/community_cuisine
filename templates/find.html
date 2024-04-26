@@ -67,7 +67,7 @@
 
         <form action="/search" method="post" class="searchForm">
             <input class="foodSearch" type="text" name="search_term" placeholder="Search for food...">
-            <button class="btn btn-outline-dark searchButton" style="color:black;" type="submit">Search</button>
+            <button class="btn btn-outline-dark searchButton" style="color:black;" type="submit" disabled>Search</button>
         </form>
         
 
@@ -98,6 +98,17 @@
                 $(this).css("color", "black");
             });
         });
+
+        $('.foodSearch').on('input', function() {
+        var inputText = $(this).val().trim();
+        var searchButton = $('.searchButton');
+
+        if (inputText.length > 0) {
+            searchButton.prop('disabled', false).removeClass('disabled');
+        } else {
+            searchButton.prop('disabled', true).addClass('disabled');
+        }
+    });
 
     </script>
 </body>
