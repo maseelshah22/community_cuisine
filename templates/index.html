@@ -83,7 +83,7 @@
             $(this).css("color", "white");
         });
 
-        
+       // 
         $(".index_intro").hover(function(){
            
 
@@ -94,6 +94,18 @@
             $(".founders").html("");
 
         });
+
+        $(".whoweare").hover(function(){
+           
+            // $(this).css("color", "rgb(214, 208, 208)")
+           $(".founders").html("Founded by: Maseel Shah, Hayden Johnson, Ilyas Jaghoori, Mohammad Murad");
+
+       }, function(){
+
+           $(this).css("color", "black");
+           $(".founders").html("");
+
+       });
 
        
     });
