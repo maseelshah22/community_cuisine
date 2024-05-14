@@ -21,4 +21,7 @@ Welcome to *Community Cuisine!*
   - You may have to be connected to UVA's internet in order to connect to the database
 * Enjoy cooking!
 
-  
+<div align=center>
+  <img width="600" alt="Screenshot 2024-05-14 at 12 43 33 AM" src="https://github.com/maseelshah22/community_cuisine/assets/98069253/e3b478ee-1df2-4325-b62a-51215c3f6b59">
+  <img  width="600" alt="Screenshot 2024-05-14 at 12 44 05 AM" src="https://github.com/maseelshah22/community_cuisine/assets/98069253/f95a4a24-176c-47b8-a6f6-c40823f95f71">
+</div>
