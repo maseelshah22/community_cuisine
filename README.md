@@ -2,7 +2,7 @@
 
 ## About 🥘
 Welcome to *Community Cuisine!*
-* We built Community Cuisine, knowing that food is a universal language that brings people together
+* We built Community Cuisine knowing that food is a universal language that brings people together
 * This website allows users to create and share recipes with other users
 * It allows people to discover and try new foods at a click of a button, while also allowing them to share their family recipes with a broader audience
 * This was built using Python's Flask Framework and designed using HTML/CSS. All information was stored in a MySQL database.
