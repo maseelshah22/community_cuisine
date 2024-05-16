@@ -1,5 +1,11 @@
 # Community Cuisine 👨‍🍳 
 
+## Developers 👨‍💻
+* Maseel Shah
+* Hayden Johnson
+* Ilyas Jaghoori
+* Mohammad Murad
+  
 ## About 🥘
 Welcome to *Community Cuisine!*
 * We built Community Cuisine knowing that food is a universal language that brings people together
@@ -26,8 +32,4 @@ Welcome to *Community Cuisine!*
   <img  width="600" alt="Screenshot 2024-05-14 at 12 44 05 AM" src="https://github.com/maseelshah22/community_cuisine/assets/98069253/f95a4a24-176c-47b8-a6f6-c40823f95f71">
 </div>
 
-## Developers 👨‍💻
-* Maseel Shah
-* Hayden Johnson
-* Ilyas Jaghoori
-* Mohammad Murad
+
