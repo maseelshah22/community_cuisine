@@ -8,7 +8,7 @@ Welcome to *Community Cuisine!*
 * This was built using Python's Flask Framework and designed using HTML/CSS. All information was stored in a MySQL database.
 * All password data was secured using a custom password hashing function: no plain text passwords are visible to anyone.
 
-## Design and Features 👨‍💻 🍽 
+## Design and Features 🖥️ 🍽 
 * After creating an account, users can upload their favorite recipes using the ```Add Recipe``` form
   - There, they can add information including name, ingredients, ethnic origin, dietary restrictions, spice level, and more!
 * When users search for a recipe, foods with names similar to the search key words will show up
@@ -20,6 +20,12 @@ Welcome to *Community Cuisine!*
 * Now, go to your terminal and run ```python app.py```
   - You may have to be connected to UVA's internet in order to connect to the database
 * Enjoy cooking!
+
+## Developers 👨‍💻
+* Maseel Shah
+* Hayden Johnson
+* Ilyas Jaghoori
+* Mohammad Murad
 
 <div align=center>
   <img width="600" alt="Screenshot 2024-05-14 at 12 43 33 AM" src="https://github.com/maseelshah22/community_cuisine/assets/98069253/e3b478ee-1df2-4325-b62a-51215c3f6b59">
